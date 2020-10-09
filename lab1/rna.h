@@ -145,11 +145,6 @@ public:
     virtual ~RNA(){}
 };
 
-class Complex
-{
 
-    Complex operator+(const Complex & r1)const;
-    Complex&operator
-}
 
 #endif //LAB1_RNA_H
