@@ -22,9 +22,9 @@ private:
     size_t size;
     size_t* rna_str;
 
-    unsigned char skip_rna_blocks(unsigned char rna, int skip_val);
+    size_t* skip_rna_blocks(size_t *rna, int skip_val);
 
-    int get_rna_block(unsigned char rna, int idx);
+    int get_rna_block(size_t *rna, int idx);
 
     int find_rna_block(int idx);
 
@@ -36,21 +36,30 @@ public:
     public:
         size_t num;
         RNA & rna;
-        reference(size_t n, RNA & rna) : num(n), rna(rna){}
+        reference(size_t n, RNA & rna) : num(n), rna(rna){};
         reference& operator=(Nucls);
-        operator Nucls(){}
+        operator Nucls();
+        reference& operator=(reference&);
     };
 
-    reference operator[](size_t num);
+    reference operator[](size_t);
 
+    //copy constr
+    //operator=
     RNA(){
-
+        this->size = 0;
+        this->capacity = 0;
+        this->rna_str = new size_t[1];
     };
+
+    RNA split(size_t);
+    bool is_complementary(const RNA&)const;
 
     RNA operator+ (const RNA & r1)const;
     bool operator== (const RNA & r1)const;
     bool operator!= (const RNA & r1)const;
-    RNA operator! ();
+    RNA operator! ()const;
+    RNA operator= (const Nucls)const;
 
 
 
