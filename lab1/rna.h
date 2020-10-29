@@ -9,10 +9,10 @@
 #include <cstring>
 
 enum Nucls{
-    A = 0,
-    G = 1,
-    C = 2,
-    T = 3
+    A,
+    G,
+    C,
+    T
 };
 
 class RNA{
@@ -20,49 +20,49 @@ class RNA{
 private:
     size_t capacity; // предполагаемое памятью кол-во вмещаемых нуклеотидов
     size_t size; //кол-во нуклеотидов
-    size_t* rna_str;
+    int8_t* rna_str;
 
-    size_t* skip_rna_blocks(size_t *rna, int skip_val);
+    int8_t* skip_rna_blocks(int8_t *rna, int skip_val);
 
-    int get_rna_block(size_t *rna, int idx);
+    Nucls get_rna_block(int8_t *rna, int idx);
 
-    int find_rna_block(int idx);
 
     class reference{
     private:
-        size_t num;
+        int8_t num;
         RNA *rna;
     public:
-        reference(size_t n, RNA *r1): num(n), rna(r1){};
+        reference(int8_t n, RNA *r1): num(n), rna(r1){};
         reference& operator=(Nucls);
         operator Nucls();
         reference& operator=(reference&);
+        bool operator==(const reference&)const;
+        bool operator==(const Nucls)const;
 
     };
 public:
 
-    reference operator[](size_t);
+    reference operator[](int8_t);
 
     RNA(){
         this->size = 0;
-        this->capacity = 0;
-        this->rna_str = new size_t[1];
+        this->capacity = 50;
+        this->rna_str = new int8_t[50];
     };
 
 
-    void put_nucl(Nucls nucl, size_t place);
 
-    RNA split(size_t);
+    RNA split(int8_t);
     bool is_complementary(const RNA&)const;
 
-    RNA operator+ (const RNA & r1)const;
+    RNA operator+ (RNA & r1);
     bool operator== (const RNA & r1)const;
     bool operator!= (const RNA & r1)const;
     RNA operator! ()const;
-    RNA operator= (RNA&);
+    RNA operator= (const RNA&);
     RNA(const RNA &r1): capacity(r1.capacity), size(r1.size){
-        this->rna_str = new size_t[capacity/4+1];
-        memcpy(rna_str, r1.rna_str, sizeof(size_t)*r1.size);
+        this->rna_str = new int8_t[capacity/4+1];
+        memcpy(rna_str, r1.rna_str, sizeof(int8_t)*r1.size);
     };
 
 
