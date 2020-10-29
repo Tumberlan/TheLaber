@@ -134,7 +134,7 @@ RNA RNA::operator! ()const{
 
 }
 
-RNA::reference& RNA::reference::operator=(Nucls nucl) {
+RNA::reference& RNA::reference::operator=(const Nucls nucl){
 
     size_t new_chain_element = nucl;
     size_t skip = this->num/ (sizeof(size_t)/2);
@@ -148,7 +148,7 @@ RNA::reference& RNA::reference::operator=(Nucls nucl) {
     return *this;
 }
 
-RNA::reference::operator Nucls() {
+RNA::reference::operator Nucls()const{
     return (Nucls)this->rna.get_rna_block(this->rna.rna_str, this->num);
 }
 
@@ -165,10 +165,27 @@ RNA::reference& RNA::reference::operator=(reference& r1){
     return *this;
 }
 
-RNA::reference RNA::operator[](size_t num){
+RNA::reference RNA::operator[](size_t num)const{
     return reference(num, *this);
 }
 
 bool RNA::is_complementary(const RNA& new_rna)const{
     return (*this == !new_rna);
+}
+
+
+RNA RNA::operator=(const RNA& r1) const{
+    RNA rna;
+    rna.size = r1.size;
+    rna.capacity = r1.capacity;
+    rna.rna_str = new size_t[r1.capacity/4+1];
+
+    for(size_t i = 0; i < size/4+1; i++){
+        rna.rna_str[i] = r1.rna_str[i];
+    }
+
+    return rna;
+}
+Nucls RNA::reference::operator=(reference r1){
+    return r1.rna[r1.num];
 }

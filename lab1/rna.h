@@ -37,12 +37,14 @@ public:
         size_t num;
         RNA & rna;
         reference(size_t n, RNA & rna) : num(n), rna(rna){};
-        reference& operator=(Nucls);
-        operator Nucls();
+        reference& operator=(const Nucls);
+        operator Nucls()const;
         reference& operator=(reference&);
+        Nucls operator= ( reference);
+
     };
 
-    reference operator[](size_t);
+    reference operator[](size_t)const;
 
     //copy constr
     //operator=
@@ -52,6 +54,7 @@ public:
         this->rna_str = new size_t[1];
     };
 
+
     RNA split(size_t);
     bool is_complementary(const RNA&)const;
 
@@ -59,7 +62,8 @@ public:
     bool operator== (const RNA & r1)const;
     bool operator!= (const RNA & r1)const;
     RNA operator! ()const;
-    RNA operator= (const Nucls)const;
+    // operator= (const reference&)const;
+    RNA operator= (const RNA & r1)const;
 
 
 
