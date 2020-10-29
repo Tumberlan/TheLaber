@@ -33,18 +33,22 @@ private:
 public:
 
     class reference{
-    public:
+    private:
         size_t num;
-        RNA & rna;
-        reference(size_t n, RNA & rna) : num(n), rna(rna){};
-        reference& operator=(const Nucls);
-        operator Nucls()const;
+        RNA &rna;
+    public:
+        reference(size_t n, RNA &r1): num(n), rna(r1){
+            num = n;
+            rna = r1;
+        }
+        reference& operator=(Nucls);
+        operator Nucls();
         reference& operator=(reference&);
-        Nucls operator= ( reference);
+        //Nucls operator= ( reference);
 
     };
 
-    reference operator[](size_t)const;
+    reference operator[](size_t);
 
     //copy constr
     //operator=
