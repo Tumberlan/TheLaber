@@ -20,19 +20,20 @@ class RNA{
 private:
     size_t capacity; // предполагаемое памятью кол-во вмещаемых нуклеотидов
     size_t size; //кол-во нуклеотидов
-    int8_t* rna_str;
+    uint8_t* rna_str;
 
-    int8_t* skip_rna_blocks(int8_t *rna, int skip_val);
+    uint8_t* skip_rna_blocks(uint8_t *rna, int skip_val);
 
-    Nucls get_rna_block(int8_t *rna, int idx);
+
+    Nucls get_rna_block(uint8_t *rna, int idx);
 
 
     class reference{
     private:
-        int8_t num;
+        uint8_t num;
         RNA *rna;
     public:
-        reference(int8_t n, RNA *r1): num(n), rna(r1){};
+        reference(uint8_t n, RNA *r1): num(n), rna(r1){};
         reference& operator=(Nucls);
         operator Nucls();
         reference& operator=(reference&);
@@ -42,32 +43,33 @@ private:
     };
 public:
 
-    reference operator[](int8_t);
+    reference operator[](size_t);
 
-    RNA(){
-        this->size = 0;
-        this->capacity = 50;
-        this->rna_str = new int8_t[50];
-    };
+    RNA();
 
 
 
-    RNA split(int8_t);
+    RNA split(uint8_t);
     bool is_complementary(const RNA&)const;
 
-    RNA operator+ (RNA & r1);
+    RNA operator+ (const RNA & r1)const;
     bool operator== (const RNA & r1)const;
     bool operator!= (const RNA & r1)const;
     RNA operator! ()const;
     RNA operator= (const RNA&);
-    RNA(const RNA &r1): capacity(r1.capacity), size(r1.size){
-        this->rna_str = new int8_t[capacity/4+1];
-        memcpy(rna_str, r1.rna_str, sizeof(int8_t)*r1.size);
+    RNA(const RNA &r1){
+        if(this == &r1){
+            return ;
+        }
+        this->capacity = r1.capacity;
+        this->size = r1.size;
+        this->rna_str = new uint8_t[capacity/4+1];
+        memcpy(rna_str, r1.rna_str, sizeof(uint8_t)*r1.size);
     };
 
 
 
-    virtual ~RNA(){}
+    virtual ~RNA();
 };
 
 

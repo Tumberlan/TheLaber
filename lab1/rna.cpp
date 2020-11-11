@@ -4,38 +4,65 @@
 #include "rna.h"
 #include <stdio.h>
 #include <iostream>
+#include <math.h>
 
-int8_t* RNA::skip_rna_blocks(int8_t *rna, int skip_val){
+RNA:: RNA(){
+    this->size = 0;
+    this->capacity = 0;
+    this->rna_str = nullptr;
+};
+
+RNA:: ~RNA(){
+    if(rna_str != nullptr){
+        delete rna_str;
+        rna_str = nullptr;
+    }
+}
+
+
+uint8_t* RNA::skip_rna_blocks(uint8_t *rna, int32_t skip_val){
     *rna <<= 8*skip_val;
     return rna;
 }
 
-Nucls RNA::get_rna_block(int8_t *rna, int idx){
+Nucls RNA::get_rna_block(uint8_t *rna, int32_t idx){
 
     return Nucls(0x03 & (rna[idx/4] >> 2*(3-idx%4)));
 }
 
-RNA::reference RNA::operator[](int8_t num){
+RNA::reference RNA::operator[](size_t num){
 
-    if(num > this->size){
-        this->size = num;
+    size_t old_size = this->size;
+    if(old_size == 0){
+        old_size = 1;
+    }
+
+    if(num+1 > this->size){
+        this->size = num+1;
+    }
+    if(this->rna_str == nullptr){
+        this->rna_str = new uint8_t[(int32_t)ceil((double)this->size/4)];
     }
     if(this->size > this->capacity){
-        int8_t* new_rna = new int8_t[sizeof(int8_t)*this->capacity*2];
-        for (int i = 0; i < this->capacity/4+1; i++){
-            new_rna[i] = this->rna_str[i];
+        if(this->capacity == 0){
+            this->capacity = 1;
         }
-        delete this->rna_str;
-        this->rna_str = new_rna;
         this->capacity = this->capacity*2;
+        uint8_t *str_new = new uint8_t[(int32_t)ceil((double)this->capacity/4)];
+        memcpy(str_new, this->rna_str, sizeof(uint8_t)*((int32_t)ceil((double)this->capacity/4)));
+        delete[] this->rna_str;
+        this->rna_str = str_new;
+
     }
+    //
+    // std:: cout << &this[num] << " ";
     return reference(num, this);
 }
 
 
 RNA::reference& RNA::reference::operator=(const Nucls nucl){
 
-    short indoor_move = 4-1 - this->num%4;
+    int8_t indoor_move = 4-1 - this->num%4;
     this->rna->rna_str[this->num/4] &= (0xFF- (0x03 << 2*indoor_move));
     this->rna->rna_str[this->num/4] |= nucl << 2*indoor_move;
 
@@ -69,61 +96,84 @@ bool RNA::reference::operator==(const Nucls nucl)const{
 }
 
 
-RNA RNA::split(int8_t idx) {
+RNA RNA::split(uint8_t idx) {
+    if(this->size == 0){
+        return RNA();
+    }
+
+    if(idx < 0 || idx >= this->size){
+        return *this;
+    }
+
+
     RNA new_rna;
     new_rna.size = this->size - idx;
     new_rna.capacity = this->capacity - idx;
-    new_rna.rna_str = new int8_t[new_rna.capacity/4+1];
+    new_rna.rna_str = new uint8_t[(uint8_t)ceil((double)new_rna.capacity/4)];
 
-    int full_mv = idx/4;
+    int32_t full_mv = idx/4;
 
-    memcpy(new_rna.rna_str, &this->rna_str[full_mv], sizeof(int8_t)*(capacity/4+1));
+    memcpy(new_rna.rna_str, &this->rna_str[full_mv], sizeof(uint8_t)*(new_rna.size/4+1));
 
-    short move = idx % 4;
+    int8_t move = idx % 4;
     if(move!=0){
-        for(int i = 0; i < new_rna.size/4+1; i++){
-            if(i >= 1){
-                new_rna.rna_str[i] = new_rna.rna_str[i] << 2*(move);
-            }
-            new_rna.rna_str[i] = new_rna.rna_str[i] >> 2*(4-1-move);
+        for(int32_t i = 0; i < new_rna.size/4+1; ++i){
+            new_rna.rna_str[i] = new_rna.rna_str[i] << 2*move;
+            new_rna.rna_str[i] |= new_rna.rna_str[i+1] >> 2*(4-move);
         }
     }
     return new_rna;
 }
 
+RNA RNA::operator=(const RNA &r1){
+    this->size = r1.size;
+    this->capacity = r1.capacity;
+    this->rna_str = new uint8_t[capacity/4+1];
+    memcpy(this->rna_str, r1.rna_str, sizeof(uint8_t)*(r1.size/4+1));
+    return *this;
+}
 
 
-RNA RNA::operator+ (RNA & r1){
+
+RNA RNA::operator+ (const RNA & r1)const{
     if (this->size + r1.size == 0){
         return RNA();
     }
-    std:: cout << "crash";
+
+
 
     RNA sum;
     sum.capacity = this->capacity + r1.capacity;
     sum.size = this->size + r1.size;
-    sum.rna_str = new int8_t[sum.capacity*4+1];
+    sum.rna_str = new uint8_t[(int32_t)ceil((double)sum.capacity/4)];
 
-    std:: cout << sum.capacity<< '\n';
-    for(int i = 0; i < this->size; i++){
-        std:: cout << i << " ";
-        sum.operator[](i) = this->operator[](i);
+
+
+    memcpy(sum.rna_str, this->rna_str, sizeof(uint8_t)*((int32_t)ceil((double)this->size/4)));
+    memcpy(&sum.rna_str[(int32_t)ceil((double)this->size/4)], r1.rna_str, sizeof(uint8_t)*((int32_t)ceil((double)r1.size/4)));
+
+
+    int8_t rest = this->size%4;
+    int32_t first_len = this->size/4;
+    if(rest != 0) {
+
+        sum.rna_str[first_len] |= sum.rna_str[first_len+1] >> 2*rest;
+        for (int32_t i = first_len+1; i < (int32_t)ceil((double)sum.size / 4 - 1); i++) {
+            sum.rna_str[i] = sum.rna_str[i] << 2*(4 - rest);
+            sum.rna_str[i] |= sum.rna_str[i+1] >> 2*rest;
+        }
+        sum.rna_str[(int32_t)ceil((double)sum.size/4)] = sum.rna_str[(int32_t)ceil((double)sum.size/4)] << 2*(4 - rest);
     }
-    std:: cout << "crash" << '\n';
-    for(int i = 0; i < r1.size; i++){
-        std:: cout << this->size+i << " ";
-        sum.operator[](this->size+1+i) = r1.operator[](i);
-    }
-    std:: cout << "crash";
+
+
     return sum;
-
 }
-//rna=rna
+
 bool RNA::operator== (const RNA & r1) const{
     if(this->size != r1.size){
         return false;
     }
-    for (int i = 0; i < this->size/4+1; i++){
+    for (int32_t i = 0; i < this->size/4+1; i++){
         if(this->rna_str[i] != r1.rna_str[i]){
             return false;
         }
@@ -135,7 +185,7 @@ bool RNA::operator!= (const RNA & r1)const{
     if(this->size != r1.size){
         return true;
     }
-    for (int i = 0; i < this->size/4+1; i++){
+    for (int32_t i = 0; i < this->size/4+1; i++){
         if(this->rna_str[i] != r1.rna_str[i]){
             return true;
         }
@@ -145,22 +195,17 @@ bool RNA::operator!= (const RNA & r1)const{
 }
 
 RNA RNA::operator! ()const{
-    RNA r_new;
+    RNA r1 = *this;
 
-    r_new.capacity = this->capacity;
-    r_new.size = r_new.size;
-    r_new.rna_str = this->rna_str;
-
-    for(int8_t i = 0; i < r_new.size/4+1; i++){
-        r_new.rna_str[i] = ~r_new.rna_str[i];
-    }
-    if (r_new.size%4 > 0){
-        r_new.rna_str[r_new.size/4+1] >>= (4-(r_new.size%4))*2;
-        r_new.rna_str[r_new.size/4+1] = ~r_new.rna_str[r_new.size/4+1];
-        r_new.rna_str[r_new.size/4+1] <<= (4-(r_new.size%4))*2;
+    for (int32_t i=0; i < (int32_t)ceil((double)r1.size/4); ++i) {
+        r1.rna_str[i] = ~r1.rna_str[i];
     }
 
-    return r_new;
+    // Обнуление хвоста последнего байта
+    r1.rna_str[r1.size/4] >>= 2*(4 - r1.size%4);
+    r1.rna_str[r1.size/4] <<= 2*(4 - r1.size%4);
+
+    return r1;
 
 }
 
@@ -169,10 +214,5 @@ bool RNA::is_complementary(const RNA& new_rna)const{
     return (*this == !new_rna);
 }
 
-RNA RNA::operator=(const RNA &r1){
-    this->size = r1.size;
-    this->capacity = r1.capacity;
-    this->rna_str = new int8_t[capacity/4+1];
-    memcpy(this->rna_str, r1.rna_str, sizeof(int8_t)*(r1.size/4+1));
-    return *this;
-}
+
+
