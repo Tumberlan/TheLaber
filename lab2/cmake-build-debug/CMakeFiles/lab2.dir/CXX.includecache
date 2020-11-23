@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/Igor/ProgProjects/TheLaber/lab2/game.cpp
+game.h
+C:/Users/Igor/ProgProjects/TheLaber/lab2/game.h
+
+C:/Users/Igor/ProgProjects/TheLaber/lab2/game.h
+iostream
+-
+fstream
+-
+
+C:/Users/Igor/ProgProjects/TheLaber/lab2/main.cpp
+iostream
+-
+random
+-
+stdio.h
+-
+game.h
+C:/Users/Igor/ProgProjects/TheLaber/lab2/game.h
+string
+-
+cstring
+-
+functional
+-
+

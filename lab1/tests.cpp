@@ -21,19 +21,15 @@ TEST_F(ClassDeclaration,test_eq){
 }
 
 TEST_F(ClassDeclaration,test_plus){
-    std:: cout << "dash";
     for (int i = 0; i < 100; i++){
         rnk1[i] = C;
         rnk2[i] = T;
     }
-    std:: cout << "dash";
     rnk3 = rnk1 + rnk2;
-    std:: cout << "dash";
     for (int i = 0; i < 100; i++){
         EXPECT_EQ(rnk3[i],rnk1[i]);
         EXPECT_EQ(rnk3[i+100],rnk2[i]);
     }
-    std:: cout << "dash";
 }
 /*
 TEST_F(ClassDeclaration,test_100mil){
@@ -58,19 +54,18 @@ TEST_F(ClassDeclaration,test_cpy){
         EXPECT_EQ(rnk1[i],rnk2[i]);
     }
 }
-
+/*
 TEST_F(ClassDeclaration,test_split){
-    for (int i = 0; i < 1000; i+=3){
+    for (int i = 0; i < 100; i+= 2){
         rnk1[i] = G;
         rnk1[i+1] = A;
-        rnk1[i+2] = C;
     }
-    rnk2 = rnk1.split(100);
-    for (int i = 0; i < 1000 - 100; i++){
-        EXPECT_EQ(rnk1[i+100],rnk2[i]);
+    rnk2 = rnk1.split(15);
+    for (int i = 15; i < 100; i++){
+        EXPECT_EQ(rnk1[i],rnk2[i-15]);
     }
 }
-
+*/
 TEST_F(ClassDeclaration,test_isComplementary){
     for (int i = 0; i < 1000; i+=3){
         rnk1[i] = G;
@@ -89,4 +84,5 @@ TEST_F(ClassDeclaration,test_big_rad){
     rnk1[1000000000] = rnk1[0];
     EXPECT_EQ(rnk1[0],C);
     EXPECT_EQ(rnk1[1000000000],C);
-}*/
+}
+*/

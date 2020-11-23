@@ -1,63 +1,69 @@
 #include <iostream>
 #include <random>
 #include <stdio.h>
-#define FIELD_WIDTH 10
-#define FIELD_HEIGHT 10
+#include "game.h"
+#include <string>
+#include <cstring>
+#include <functional>
 
 
-
-
-
-class point{
-public:
-    unsigned char is_live;
-    point& operator=(unsigned char a){
-        this->is_live = a;
-        return *this;
+int check_step(std::string str, int a){
+    int mul = 1;
+    if(a > 1) {
+        for (int i = 0; i < a-1; i++);
+        mul = mul * 10;
     }
-};
 
-class field{
-private:
-    point world[FIELD_WIDTH][FIELD_HEIGHT];
-
-
-    enum width_coef{
-        A, B, C, D, E, F, G, H, J
-    };
-
-    width_coef static f_char_to_wc(unsigned char a){
-        int tmp = a - 'A';
-        return (width_coef)tmp;
+    int result = 0;
+    for (int i = 0; i < a; i++){
+        result += (str[i]-'0')*mul;
+        mul = mul/10;
     }
-public:
 
-    void init_wrld(){
+    return result;
+}
 
+bool f_command(field wrld){
+    std::string input;
+    std:: cin >> input;
 
-
-        int start_point_amount;
-        std:: cin >> start_point_amount;
-
-        for (int i = 0; i < FIELD_HEIGHT; i++){
-            for (int j = 0; j < FIELD_WIDTH; j++)
+    if (input == "reset"){
+        wrld.reset();
+        return true;
+    }
+    if (input == "set"){
+        std::cin >> input;
+        wrld.set( (input[1] - '0'), (input[0] - 'A'));
+        return true;
+    }
+    if (input == "clear"){
+        std::cin >> input;
+        wrld.clear((input[1] - '0'), (input[0] - 'A'));
+        return true;
+    }
+    if (input == "step"){
+        std::cin >> input;
+        for(int i = 0; i < check_step(input, input.length()); i++){
+            wrld.one_step();
         }
-
-        for (int i = 0; i<start_point_amount; i++){
-            unsigned char width;
-            unsigned int y;
-            std:: cin >> width >> y;
-            width_coef x = f_char_to_wc(width);
-            this->world[x][y] = '*';
-        }
-
-
-
+        return true;
     }
-
-
-};
-
+    if (input == "back"){
+        wrld.back_step();
+        return true;
+    }
+    if (input == "save"){
+        std::cin >> input;
+        wrld.save(input);
+        return true;
+    }
+    if (input == "load"){
+        std::cin >> input;
+        wrld.load(input);
+        return true;
+    }
+    return false;
+}
 
 
 
@@ -65,6 +71,23 @@ public:
 
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+
+    field wrld;
+    wrld.set(1,1);
+    wrld.set(1,2);
+    wrld.set('3' - '0', 'B' - 'A');
+    std::cout << wrld.check_neighbours(2, 2);
+    std::cout << wrld.check_neighbours(2, 1);
+    std::cout << '\n';
+    std::cout << '\n';
+    wrld.draw();
+    wrld.one_step();
+    std::cout << '\n';
+    wrld.draw();
+    wrld.one_step();
+    std::cout << '\n';
+    wrld.draw();
+    wrld.save("file");
+
     return 0;
 }

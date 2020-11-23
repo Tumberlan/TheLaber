@@ -337,6 +337,8 @@ iostream
 -
 cmath
 -
+stdbool.h
+-
 
 C:/Users/Igor/ProgProjects/TheLaber/lab1/rna.h
 string

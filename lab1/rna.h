@@ -49,14 +49,14 @@ public:
 
 
 
-    RNA split(uint8_t);
+    RNA split(int32_t);
     bool is_complementary(const RNA&)const;
 
     RNA operator+ (const RNA & r1)const;
     bool operator== (const RNA & r1)const;
     bool operator!= (const RNA & r1)const;
     RNA operator! ()const;
-    RNA operator= (const RNA&);
+    RNA operator= (const RNA& r1);
     RNA(const RNA &r1){
         if(this == &r1){
             return ;
