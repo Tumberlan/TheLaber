@@ -5,6 +5,7 @@
 #include <string>
 #include <cstring>
 #include <functional>
+#include <Windows.h>
 
 
 int check_step(std::string str, int a){
@@ -76,17 +77,20 @@ int main() {
     wrld.set(1,1);
     wrld.set(1,2);
     wrld.set('3' - '0', 'B' - 'A');
-    std::cout << wrld.check_neighbours(2, 2);
-    std::cout << wrld.check_neighbours(2, 1);
+    std::cout << wrld.nei_num(2, 2);
+    std::cout << wrld.nei_num(2, 1);
     std::cout << '\n';
     std::cout << '\n';
-    wrld.draw();
+    //wrld.draw();
+    std::cout << wrld;
     wrld.one_step();
     std::cout << '\n';
-    wrld.draw();
+    //wrld.draw();
+    std::cout << wrld;
     wrld.one_step();
     std::cout << '\n';
-    wrld.draw();
+    //wrld.draw();
+    std::cout << wrld;
     wrld.save("file");
 
     return 0;

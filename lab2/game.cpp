@@ -3,65 +3,43 @@
 //
 #include "game.h"
 
-// РЕАЛИЗАЦИЯ ЯЧЕЙКИ
+// РЕАЛИЗАЦИЯ МИРА
 
-void point::draw() const {
-    if(!this->state){
+field::field() {
+    this->wrld = new bool*[FIELD_WIDTH];
+    this->pre_wrld = new bool*[FIELD_WIDTH];
+
+    for(int i = 0; i < FIELD_HEIGHT; i++){
+        this->wrld[i] = new bool[FIELD_HEIGHT];
+        this->pre_wrld[i] = new bool[FIELD_HEIGHT];
+    }
+
+    for (int i = 0; i < FIELD_HEIGHT; i++){
+        for (int j = 0; j < FIELD_WIDTH; j++){
+            wrld[i][j] = false;
+            pre_wrld[i][j] = false;
+        }
+    }
+}
+
+field::~field() {
+    for (int i = 0; i < FIELD_HEIGHT; i++){
+        delete[] this->wrld[i];
+        delete[] this->pre_wrld[i];
+    }
+    delete[] this->wrld;
+    delete[] this->pre_wrld;
+}
+
+void field::draw(int a,int b) const {
+    if(!this->wrld[a][b]){
         std::cout << ". ";
     }else{
         std::cout << "* ";
     }
 }
 
-void point::set_state(bool a) {
-    this->state = a;
-}
-
-void point::update_pre_state() {
-    this->pre_state = this->state;
-}
-
-void point::update_neighbors(int amount) {
-    this->alive_neigh_numb = amount;
-}
-
-bool point::check_pre_state() const {
-    return this->pre_state;
-}
-
-bool point::check_state()const {
-    return this->state;
-}
-
-void point::update_state() {
-
-    if ((!this->pre_state) && this->alive_neigh_numb == 3){
-        this->state = true;
-    }else if(this->pre_state && ((this->alive_neigh_numb >= 2) && (this->alive_neigh_numb <= 3))){
-        this->state = true;
-    }else if(this->pre_state && ((this->alive_neigh_numb < 2) || (this->alive_neigh_numb > 3))){
-        this->state = false;
-    }else{
-        this->state = false;
-    }
-}
-
-void point::swap_state() {
-    bool tmp = this->state;
-    this->state = this->pre_state;
-    this->pre_state = tmp;
-}
-
-void point::save(std::ofstream &file) const {
-    file << this->state << ' ';
-}
-void point::load(std::ifstream &file) {
-    file >> this->state;
-}
-
-// РЕАЛИЗАЦИЯ МИРА
-
-void field::draw() {
+std::ostream& operator<<(std::ostream& os, const field& game){
     std::cout << "  ";
     for (int i = 0; i < FIELD_WIDTH; i++){
         char a = 'A'+i;
@@ -71,22 +49,24 @@ void field::draw() {
     for(int i = 0; i < FIELD_HEIGHT; i++){
         std:: cout << 9-i << " ";
         for(int j = 0; j < FIELD_WIDTH; j++){
-            this->wrld[i][j].draw();
+            game.draw(i,j);
         }
         std::cout << '\n';
     }
-    std::cout << "Step " << this->step_numb;
+    std::cout << "Step " << game.step_numb;
+    return os;
 }
 
 void field::set(int height, int width) {
-    this->wrld[9 - height][width].set_state(true);
+    this->wrld[9 - height][width] = true;
 }
 
 void field::clear(int height, int width) {
-    this->wrld[9 - height][width].set_state(false);
+    this->wrld[9 - height][width] = false;
 }
 
-int field::check_neighbours(int height, int width) {
+
+int field::alive_neigh_numb(int height, int width) const {
     int number_of_neighbours = 0;
     height = 9 - height;
     int h1 = height - 1;
@@ -110,15 +90,15 @@ int field::check_neighbours(int height, int width) {
     bool arr2[3];
     bool arr3[3];
 
-    arr1[0] = this->wrld[h1][w1].check_state();
-    arr2[0] = this->wrld[height][w1].check_state();
-    arr3[0] = this->wrld[h2][w1].check_state();
-    arr1[1] = this->wrld[h1][width].check_state();
+    arr1[0] = this->wrld[h1][w1];
+    arr2[0] = this->wrld[height][w1];
+    arr3[0] = this->wrld[h2][w1];
+    arr1[1] = this->wrld[h1][width];
     arr2[1] = false;
-    arr3[1] = this->wrld[h2][width].check_state();
-    arr1[2] = this->wrld[h1][w2].check_state();
-    arr2[2] = this->wrld[height][w2].check_state();
-    arr3[2] = this->wrld[h2][w2].check_state();
+    arr3[1] = this->wrld[h2][width];
+    arr1[2] = this->wrld[h1][w2];
+    arr2[2] = this->wrld[height][w2];
+    arr3[2] = this->wrld[h2][w2];
 
     for (int i = 0; i < 3; i++){
         if (arr1[i]){
@@ -134,35 +114,100 @@ int field::check_neighbours(int height, int width) {
     return number_of_neighbours;
 }
 
-void field::show_states(int height, int width) {
-    height = 9 - height;
-    std::cout << "pre-state: " << this->wrld[height][width].check_pre_state() << " state: " << this->wrld[height][width].check_state();
+int field::nei_num(int a, int b) const {
+    return this->alive_neigh_numb(a, b);
 }
 
-void field::one_step() {
-    for(int i = 0; i < FIELD_HEIGHT; i++){
-        for(int j = 0; j < FIELD_WIDTH; j++){
-            this->wrld[9-i][j].update_neighbors(this->check_neighbours(i, j));
-        }
+int field::pre_alive_neigh_numb(int height, int width) const {
+    int number_of_neighbours = 0;
+    height = 9 - height;
+    int h1 = height - 1;
+    int h2 = height + 1;
+    int w1 = width - 1;
+    int w2 = width + 1;
+    if(h1 < 0) {
+        h1 = 9;
+    }
+    if(h2 > 9){
+        h2 = 0;
+    }
+    if(w1 < 0){
+        w1 = 9;
+    }
+    if(w2 > 9){
+        w2 = 0;
     }
 
+    bool arr1[3];
+    bool arr2[3];
+    bool arr3[3];
+
+    arr1[0] = this->pre_wrld[h1][w1];
+    arr2[0] = this->pre_wrld[height][w1];
+    arr3[0] = this->pre_wrld[h2][w1];
+    arr1[1] = this->pre_wrld[h1][width];
+    arr2[1] = false;
+    arr3[1] = this->pre_wrld[h2][width];
+    arr1[2] = this->pre_wrld[h1][w2];
+    arr2[2] = this->pre_wrld[height][w2];
+    arr3[2] = this->pre_wrld[h2][w2];
+
+    for (int i = 0; i < 3; i++){
+        if (arr1[i]){
+            number_of_neighbours++;
+        }
+        if (arr2[i]){
+            number_of_neighbours++;
+        }
+        if (arr3[i]){
+            number_of_neighbours++;
+        }
+    }
+    return number_of_neighbours;
+}
+
+void field::update_state(int a, int b) {
+    a = 9-a;
+    if ((!this->pre_wrld[a][b]) && this->pre_alive_neigh_numb(a,b) == 3){
+        this->wrld[a][b] = true;
+    }else if(this->pre_wrld[a][b] && ((this->pre_alive_neigh_numb(a,b) >= 2) && (this->pre_alive_neigh_numb(a, b) <= 3))){
+        this->wrld[a][b] = true;
+    }else if(this->pre_wrld[a][b] && ((this->pre_alive_neigh_numb(a,b) < 2) || (this->pre_alive_neigh_numb(a,b) > 3))){
+        this->wrld[a][b] = false;
+    }else{
+        this->wrld[a][b] = false;
+    }
+}
+
+void field::show_states(int height, int width) {
+    height = 9 - height;
+    std::cout << "pre-state: " << this->pre_wrld[height][width] << " state: " << this->wrld[height][width];
+}
 
 
-    for(int i = 0; i < FIELD_HEIGHT; i++){
-        for(int j = 0; j < FIELD_WIDTH; j++){
-            this->wrld[i][j].update_pre_state();
-            this->wrld[i][j].update_state();
+
+void field::one_step() {
+
+    this->pre_wrld = this->wrld;
+
+    for (int i = 0; i < FIELD_HEIGHT; i++){
+        for (int j = 0; j < FIELD_WIDTH; j++){
+            update_state(i,j);
         }
     }
     this->step_numb++;
 }
 
 void field::back_step() {
-    for(int i = 0; i < FIELD_HEIGHT; i++){
-        for (int j = 0; j < FIELD_WIDTH; j++){
-            this->wrld[i][j].swap_state();
-        }
+    bool** temp;
+    temp = new bool*[FIELD_WIDTH];
+    for(int i = 0; i < FIELD_WIDTH; i++){
+        temp[i] = new bool[FIELD_HEIGHT];
     }
+
+    temp = this->pre_wrld;
+    this->pre_wrld = this->wrld;
+    this->wrld = temp;
 }
 
 void field::reset() {
@@ -179,7 +224,11 @@ void field::save(const std::string &file_name) const {
     file.clear();
     for(int i = 0; i < FIELD_HEIGHT; i++){
         for(int j = 0; j < FIELD_WIDTH; j++){
-            this->wrld[i][j].save(file);
+            if(this->wrld[i][j]){
+                file << '*' << ' ';
+            }else{
+                file << '.' << ' ';
+            }
         }
         file << '\n';
     }
@@ -190,8 +239,8 @@ void field::save(const std::string &file_name) const {
 void field::load(const std::string &path) {
     std::ifstream file(path + ".txt"); // открываем файл для чтения
     for(int i = 0; i < FIELD_HEIGHT; i++){
-        for(int j = 0; j < FIELD_WIDTH; j++){
-            this->wrld[i][j].load(file);
+        for(int j = 0; j < FIELD_WIDTH; j++) {
+            file >> this->wrld[i][j];
         }
     }
     file.close();
