@@ -20,7 +20,6 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 set(CMAKE_TARGET_LINKED_INFO_FILES
   "C:/Users/Igor/ProgProjects/TheLaber/lab2/cmake-build-debug/googletest-master/googlemock/CMakeFiles/gmock.dir/DependInfo.cmake"
   "C:/Users/Igor/ProgProjects/TheLaber/lab2/cmake-build-debug/googletest-master/googletest/CMakeFiles/gtest.dir/DependInfo.cmake"
-  "C:/Users/Igor/ProgProjects/TheLaber/lab2/cmake-build-debug/googletest-master/googletest/CMakeFiles/gtest_main.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

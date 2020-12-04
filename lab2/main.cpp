@@ -22,9 +22,10 @@ int main() {
     field wrld;
     wrld.set(1,1);
     wrld.set(1,2);
-    wrld.set('3' - '0', 'B' - 'A');
-    std::cout << wrld.nei_num(2, 2);
-    std::cout << wrld.nei_num(2, 1);
+    wrld.set(1, 3);
+    std:: cout << wrld.nei_num(1, 2);
+    std:: cout << wrld.nei_num(0, 2);
+    std:: cout << wrld.nei_num(2, 2);
     std::cout << '\n';
     std::cout << '\n';
     //wrld.draw();

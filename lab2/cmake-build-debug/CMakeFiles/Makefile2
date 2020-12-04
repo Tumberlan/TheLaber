@@ -152,7 +152,8 @@ googletest-master/googletest/clean: googletest-master/googletest/CMakeFiles/gtes
 # Target rules for target CMakeFiles/lab2.dir
 
 # All Build rule for target.
-CMakeFiles/lab2.dir/all:
+CMakeFiles/lab2.dir/all: googletest-master/googletest/CMakeFiles/gtest.dir/all
+CMakeFiles/lab2.dir/all: googletest-master/googletest/CMakeFiles/gtest_main.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\lab2.dir\build.make CMakeFiles/lab2.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\lab2.dir\build.make CMakeFiles/lab2.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\Igor\ProgProjects\TheLaber\lab2\cmake-build-debug\CMakeFiles --progress-num=9,10,11,12 "Built target lab2"
@@ -160,7 +161,7 @@ CMakeFiles/lab2.dir/all:
 
 # Build rule for subdir invocation for target.
 CMakeFiles/lab2.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Igor\ProgProjects\TheLaber\lab2\cmake-build-debug\CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Igor\ProgProjects\TheLaber\lab2\cmake-build-debug\CMakeFiles 8
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/lab2.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Igor\ProgProjects\TheLaber\lab2\cmake-build-debug\CMakeFiles 0
 .PHONY : CMakeFiles/lab2.dir/rule
@@ -179,8 +180,8 @@ CMakeFiles/lab2.dir/clean:
 # Target rules for target googletest-master/googlemock/CMakeFiles/gmock_main.dir
 
 # All Build rule for target.
-googletest-master/googlemock/CMakeFiles/gmock_main.dir/all: googletest-master/googlemock/CMakeFiles/gmock.dir/all
 googletest-master/googlemock/CMakeFiles/gmock_main.dir/all: googletest-master/googletest/CMakeFiles/gtest.dir/all
+googletest-master/googlemock/CMakeFiles/gmock_main.dir/all: googletest-master/googlemock/CMakeFiles/gmock.dir/all
 	$(MAKE) $(MAKESILENT) -f googletest-master\googlemock\CMakeFiles\gmock_main.dir\build.make googletest-master/googlemock/CMakeFiles/gmock_main.dir/depend
 	$(MAKE) $(MAKESILENT) -f googletest-master\googlemock\CMakeFiles\gmock_main.dir\build.make googletest-master/googlemock/CMakeFiles/gmock_main.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\Igor\ProgProjects\TheLaber\lab2\cmake-build-debug\CMakeFiles --progress-num=3,4 "Built target gmock_main"
@@ -188,7 +189,7 @@ googletest-master/googlemock/CMakeFiles/gmock_main.dir/all: googletest-master/go
 
 # Build rule for subdir invocation for target.
 googletest-master/googlemock/CMakeFiles/gmock_main.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Igor\ProgProjects\TheLaber\lab2\cmake-build-debug\CMakeFiles 8
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Igor\ProgProjects\TheLaber\lab2\cmake-build-debug\CMakeFiles 6
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 googletest-master/googlemock/CMakeFiles/gmock_main.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Igor\ProgProjects\TheLaber\lab2\cmake-build-debug\CMakeFiles 0
 .PHONY : googletest-master/googlemock/CMakeFiles/gmock_main.dir/rule
@@ -215,7 +216,7 @@ googletest-master/googlemock/CMakeFiles/gmock.dir/all: googletest-master/googlet
 
 # Build rule for subdir invocation for target.
 googletest-master/googlemock/CMakeFiles/gmock.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Igor\ProgProjects\TheLaber\lab2\cmake-build-debug\CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Igor\ProgProjects\TheLaber\lab2\cmake-build-debug\CMakeFiles 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 googletest-master/googlemock/CMakeFiles/gmock.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Igor\ProgProjects\TheLaber\lab2\cmake-build-debug\CMakeFiles 0
 .PHONY : googletest-master/googlemock/CMakeFiles/gmock.dir/rule
@@ -234,7 +235,7 @@ googletest-master/googlemock/CMakeFiles/gmock.dir/clean:
 # Target rules for target googletest-master/googletest/CMakeFiles/gtest.dir
 
 # All Build rule for target.
-googletest-master/googletest/CMakeFiles/gtest.dir/all: googletest-master/googletest/CMakeFiles/gtest_main.dir/all
+googletest-master/googletest/CMakeFiles/gtest.dir/all:
 	$(MAKE) $(MAKESILENT) -f googletest-master\googletest\CMakeFiles\gtest.dir\build.make googletest-master/googletest/CMakeFiles/gtest.dir/depend
 	$(MAKE) $(MAKESILENT) -f googletest-master\googletest\CMakeFiles\gtest.dir\build.make googletest-master/googletest/CMakeFiles/gtest.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\Igor\ProgProjects\TheLaber\lab2\cmake-build-debug\CMakeFiles --progress-num=5,6 "Built target gtest"
@@ -242,7 +243,7 @@ googletest-master/googletest/CMakeFiles/gtest.dir/all: googletest-master/googlet
 
 # Build rule for subdir invocation for target.
 googletest-master/googletest/CMakeFiles/gtest.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Igor\ProgProjects\TheLaber\lab2\cmake-build-debug\CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Igor\ProgProjects\TheLaber\lab2\cmake-build-debug\CMakeFiles 2
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 googletest-master/googletest/CMakeFiles/gtest.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Igor\ProgProjects\TheLaber\lab2\cmake-build-debug\CMakeFiles 0
 .PHONY : googletest-master/googletest/CMakeFiles/gtest.dir/rule
@@ -261,7 +262,7 @@ googletest-master/googletest/CMakeFiles/gtest.dir/clean:
 # Target rules for target googletest-master/googletest/CMakeFiles/gtest_main.dir
 
 # All Build rule for target.
-googletest-master/googletest/CMakeFiles/gtest_main.dir/all:
+googletest-master/googletest/CMakeFiles/gtest_main.dir/all: googletest-master/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) $(MAKESILENT) -f googletest-master\googletest\CMakeFiles\gtest_main.dir\build.make googletest-master/googletest/CMakeFiles/gtest_main.dir/depend
 	$(MAKE) $(MAKESILENT) -f googletest-master\googletest\CMakeFiles\gtest_main.dir\build.make googletest-master/googletest/CMakeFiles/gtest_main.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\Igor\ProgProjects\TheLaber\lab2\cmake-build-debug\CMakeFiles --progress-num=7,8 "Built target gtest_main"
@@ -269,7 +270,7 @@ googletest-master/googletest/CMakeFiles/gtest_main.dir/all:
 
 # Build rule for subdir invocation for target.
 googletest-master/googletest/CMakeFiles/gtest_main.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Igor\ProgProjects\TheLaber\lab2\cmake-build-debug\CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Igor\ProgProjects\TheLaber\lab2\cmake-build-debug\CMakeFiles 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 googletest-master/googletest/CMakeFiles/gtest_main.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Igor\ProgProjects\TheLaber\lab2\cmake-build-debug\CMakeFiles 0
 .PHONY : googletest-master/googletest/CMakeFiles/gtest_main.dir/rule

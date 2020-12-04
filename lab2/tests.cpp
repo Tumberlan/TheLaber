@@ -40,15 +40,12 @@ void runSimpleTest(std::istringstream &input,game_life &game){
 }
 
 TEST_F(GameFixture,set){
-    std::istringstream input("set A0\n"
-                             "save " + output1 + "\n"
-                                                 "reset\n"
-                                                 "save " + output2 + "\n"
-                                                                     "end\n");
+    std::istringstream input("set A0\n" "save " + output1 + "\n" "reset\n" "save " + output2 + "\n" "end\n");
 
     runSimpleTest(input,game);
     ASSERT_FALSE(compareTestFiles(output1,output2));
 }
+
 
 TEST_F(GameFixture,clear){
     std::istringstream input("set C4\n"
@@ -92,23 +89,6 @@ TEST_F(GameFixture,back){
     ASSERT_TRUE(compareTestFiles(output1,output3));
 }
 
-TEST_F(GameFixture,single_step){
-    std::istringstream input("set A0\n"
-                             "set A1\n"
-                             "set B1\n"
-                             "set C1\n"
-                             "save " + output1 + "\n"
-                                                 "step\n"
-                                                 "save " + output2 + "\n"
-                                                                     "load " + output1 + "\n"
-                                                                                         "step 1\n"
-                                                                                         "save " + output3 + "\n"
-                                                                                                             "end\n");
-
-    runSimpleTest(input,game);
-    ASSERT_FALSE(compareTestFiles(output1,output2));
-    ASSERT_TRUE(compareTestFiles(output2,output3));
-}
 
 TEST_F(GameFixture,glider){
     std::istringstream input("set A1\n"
@@ -133,7 +113,7 @@ TEST_F(GameFixture,stick){
                              "set C1\n"
                              "set C2\n"
                              "save " + output1 + "\n"
-                                                 "step 1000\n"
+                                                 "step 1000000\n"
                                                  "save " + output2 + "\n"
                                                                      "step 1\n"
                                                                      "save " + output3 + "\n"

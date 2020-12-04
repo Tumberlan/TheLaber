@@ -20,6 +20,7 @@ public:
     field();
     ~field();
     void draw(int a, int b)const;
+    void pre_draw(int a, int b)const;
     int nei_num(int a, int b)const;
     friend std::ostream& operator<<(std::ostream& os, const field& game);
     void set(int height, int width);
@@ -37,7 +38,7 @@ class game_life{
 private:
     field game;
 public:
-    int check_step(std::string str, int a);
+    int check_step(std::string str, int a)const;
     void f_command();
 };
 

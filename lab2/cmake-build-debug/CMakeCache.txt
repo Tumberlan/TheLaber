@@ -341,9 +341,6 @@ googletest-distribution_SOURCE_DIR:STATIC=C:/Users/Igor/ProgProjects/TheLaber/la
 //Value Computed by CMake
 gtest_BINARY_DIR:STATIC=C:/Users/Igor/ProgProjects/TheLaber/lab2/cmake-build-debug/googletest-master/googletest
 
-//Dependencies for the target
-gtest_LIB_DEPENDS:STATIC=general;gtest_main;
-
 //Value Computed by CMake
 gtest_SOURCE_DIR:STATIC=C:/Users/Igor/ProgProjects/TheLaber/lab2/googletest-master/googletest
 

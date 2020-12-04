@@ -336,26 +336,6 @@ iostream
 fstream
 -
 
-C:/Users/Igor/ProgProjects/TheLaber/lab2/main.cpp
-iostream
--
-random
--
-stdio.h
--
-game.h
-C:/Users/Igor/ProgProjects/TheLaber/lab2/game.h
-string
--
-cstring
--
-functional
--
-Windows.h
--
-gtest/gtest.h
--
-
 C:/Users/Igor/ProgProjects/TheLaber/lab2/tests.cpp
 gtest/gtest.h
 -

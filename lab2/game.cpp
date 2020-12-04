@@ -39,6 +39,7 @@ void field::draw(int a,int b) const {
     }
 }
 
+
 std::ostream& operator<<(std::ostream& os, const field& game){
     std::cout << "  ";
     for (int i = 0; i < FIELD_WIDTH; i++){
@@ -53,6 +54,8 @@ std::ostream& operator<<(std::ostream& os, const field& game){
         }
         std::cout << '\n';
     }
+
+
     std::cout << "Step " << game.step_numb;
     return os;
 }
@@ -167,15 +170,14 @@ int field::pre_alive_neigh_numb(int height, int width) const {
 }
 
 void field::update_state(int a, int b) {
-    a = 9-a;
-    if ((!this->pre_wrld[a][b]) && this->pre_alive_neigh_numb(a,b) == 3){
-        this->wrld[a][b] = true;
-    }else if(this->pre_wrld[a][b] && ((this->pre_alive_neigh_numb(a,b) >= 2) && (this->pre_alive_neigh_numb(a, b) <= 3))){
-        this->wrld[a][b] = true;
-    }else if(this->pre_wrld[a][b] && ((this->pre_alive_neigh_numb(a,b) < 2) || (this->pre_alive_neigh_numb(a,b) > 3))){
-        this->wrld[a][b] = false;
+    if ((!this->pre_wrld[9-a][b]) && this->pre_alive_neigh_numb(a,b) == 3){
+        this->wrld[9-a][b] = true;
+    }else if(this->pre_wrld[9-a][b] && ((this->pre_alive_neigh_numb(a,b) >= 2) && (this->pre_alive_neigh_numb(a, b) <= 3))){
+        this->wrld[9-a][b] = true;
+    }else if(this->pre_wrld[9-a][b] && ((this->pre_alive_neigh_numb(a,b) < 2) || (this->pre_alive_neigh_numb(a,b) > 3))){
+        this->wrld[9-a][b] = false;
     }else{
-        this->wrld[a][b] = false;
+        this->wrld[9-a][b] = false;
     }
 }
 
@@ -188,7 +190,9 @@ void field::show_states(int height, int width) {
 
 void field::one_step() {
 
+    bool** tmp = this->pre_wrld;
     this->pre_wrld = this->wrld;
+    this->wrld = tmp;
 
     for (int i = 0; i < FIELD_HEIGHT; i++){
         for (int j = 0; j < FIELD_WIDTH; j++){
@@ -224,11 +228,7 @@ void field::save(const std::string &file_name) const {
     file.clear();
     for(int i = 0; i < FIELD_HEIGHT; i++){
         for(int j = 0; j < FIELD_WIDTH; j++){
-            if(this->wrld[i][j]){
-                file << '*' << ' ';
-            }else{
-                file << '.' << ' ';
-            }
+            file << this->wrld[i][j] << ' ';
         }
         file << '\n';
     }
@@ -249,16 +249,17 @@ void field::load(const std::string &path) {
 
 // РЕАЛИЗАЦИЯ ИГРЫ
 
-int game_life::check_step(std::string str, int a) {
+int game_life::check_step(std::string str, int a)const{
     int mul = 1;
     if(a > 1) {
-        for (int i = 0; i < a-1; i++);
-        mul = mul * 10;
+        for (int i = 0; i < a-1; i++) {
+            mul = mul * 10;
+        }
     }
 
     int result = 0;
     for (int i = 0; i < a; i++){
-        result += (str[i]-'0')*mul;
+        result += (int)(str[i]-'0')*mul;
         mul = mul/10;
     }
 
@@ -305,5 +306,6 @@ void game_life::f_command() {
         if (input == "end") {
             switcher = false;
         }
+        std:: cout << this->game;
     }
 }

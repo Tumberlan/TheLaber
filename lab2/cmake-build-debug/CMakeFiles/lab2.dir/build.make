@@ -131,6 +131,9 @@ lab2.exe: CMakeFiles/lab2.dir/main.cpp.obj
 lab2.exe: CMakeFiles/lab2.dir/game.cpp.obj
 lab2.exe: CMakeFiles/lab2.dir/tests.cpp.obj
 lab2.exe: CMakeFiles/lab2.dir/build.make
+lab2.exe: lib/libgtestd.a
+lab2.exe: lib/libgtest_maind.a
+lab2.exe: lib/libgtestd.a
 lab2.exe: CMakeFiles/lab2.dir/linklibs.rsp
 lab2.exe: CMakeFiles/lab2.dir/objects1.rsp
 lab2.exe: CMakeFiles/lab2.dir/link.txt

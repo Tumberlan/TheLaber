@@ -1,1 +1,1 @@
--isystem C:/Users/Igor/ProgProjects/TheLaber/lab2/googletest-master/googletest/include -isystem C:/Users/Igor/ProgProjects/TheLaber/lab2/googletest-master/googletest 
+-IC:/Users/Igor/ProgProjects/TheLaber/lab2/googletest-master/googletest/include -IC:/Users/Igor/ProgProjects/TheLaber/lab2/googletest-master/googletest 
