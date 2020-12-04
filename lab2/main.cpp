@@ -6,71 +6,17 @@
 #include <cstring>
 #include <functional>
 #include <Windows.h>
+#include <gtest/gtest.h>
 
 
-int check_step(std::string str, int a){
-    int mul = 1;
-    if(a > 1) {
-        for (int i = 0; i < a-1; i++);
-        mul = mul * 10;
-    }
-
-    int result = 0;
-    for (int i = 0; i < a; i++){
-        result += (str[i]-'0')*mul;
-        mul = mul/10;
-    }
-
-    return result;
-}
-
-bool f_command(field wrld){
-    std::string input;
-    std:: cin >> input;
-
-    if (input == "reset"){
-        wrld.reset();
-        return true;
-    }
-    if (input == "set"){
-        std::cin >> input;
-        wrld.set( (input[1] - '0'), (input[0] - 'A'));
-        return true;
-    }
-    if (input == "clear"){
-        std::cin >> input;
-        wrld.clear((input[1] - '0'), (input[0] - 'A'));
-        return true;
-    }
-    if (input == "step"){
-        std::cin >> input;
-        for(int i = 0; i < check_step(input, input.length()); i++){
-            wrld.one_step();
-        }
-        return true;
-    }
-    if (input == "back"){
-        wrld.back_step();
-        return true;
-    }
-    if (input == "save"){
-        std::cin >> input;
-        wrld.save(input);
-        return true;
-    }
-    if (input == "load"){
-        std::cin >> input;
-        wrld.load(input);
-        return true;
-    }
-    return false;
+int main(int argc, char *argv[]){
+    testing::InitGoogleTest(&argc,argv);
+    testing::FLAGS_gtest_break_on_failure = "";
+    return RUN_ALL_TESTS();
 }
 
 
-
-
-
-
+/*
 int main() {
 
     field wrld;
@@ -94,4 +40,4 @@ int main() {
     wrld.save("file");
 
     return 0;
-}
+}*/

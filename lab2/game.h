@@ -33,5 +33,13 @@ public:
 };
 
 
+class game_life{
+private:
+    field game;
+public:
+    int check_step(std::string str, int a);
+    void f_command();
+};
+
 
 #endif //LAB2_GAME_H

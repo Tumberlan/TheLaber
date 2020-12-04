@@ -246,3 +246,64 @@ void field::load(const std::string &path) {
     file.close();
     this->step_numb = 0;
 }
+
+// РЕАЛИЗАЦИЯ ИГРЫ
+
+int game_life::check_step(std::string str, int a) {
+    int mul = 1;
+    if(a > 1) {
+        for (int i = 0; i < a-1; i++);
+        mul = mul * 10;
+    }
+
+    int result = 0;
+    for (int i = 0; i < a; i++){
+        result += (str[i]-'0')*mul;
+        mul = mul/10;
+    }
+
+    return result;
+}
+
+void game_life::f_command() {
+
+    bool switcher = true;
+    while(switcher) {
+
+        std::string input;
+        std::cin >> input;
+
+
+        if (input == "reset") {
+            this->game.reset();
+        }
+        if (input == "set") {
+            std::cin >> input;
+            this->game.set((input[1] - '0'), (input[0] - 'A'));
+        }
+        if (input == "clear") {
+            std::cin >> input;
+            this->game.clear((input[1] - '0'), (input[0] - 'A'));
+        }
+        if (input == "step") {
+            std::cin >> input;
+            for (int i = 0; i < check_step(input, input.length()); i++) {
+                this->game.one_step();
+            }
+        }
+        if (input == "back") {
+            this->game.back_step();
+        }
+        if (input == "save") {
+            std::cin >> input;
+            this->game.save(input);
+        }
+        if (input == "load") {
+            std::cin >> input;
+            this->game.load(input);
+        }
+        if (input == "end") {
+            switcher = false;
+        }
+    }
+}

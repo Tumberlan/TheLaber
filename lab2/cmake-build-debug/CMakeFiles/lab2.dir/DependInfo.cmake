@@ -6,11 +6,13 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "C:/Users/Igor/ProgProjects/TheLaber/lab2/game.cpp" "C:/Users/Igor/ProgProjects/TheLaber/lab2/cmake-build-debug/CMakeFiles/lab2.dir/game.cpp.obj"
   "C:/Users/Igor/ProgProjects/TheLaber/lab2/main.cpp" "C:/Users/Igor/ProgProjects/TheLaber/lab2/cmake-build-debug/CMakeFiles/lab2.dir/main.cpp.obj"
+  "C:/Users/Igor/ProgProjects/TheLaber/lab2/tests.cpp" "C:/Users/Igor/ProgProjects/TheLaber/lab2/cmake-build-debug/CMakeFiles/lab2.dir/tests.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "../googletest-master/googletest/include"
   )
 
 # Targets to which this target links.
