@@ -24,7 +24,6 @@ CMakeFiles/lab2.dir/main.cpp.obj: ../googletest-master/googletest/include/gtest/
 CMakeFiles/lab2.dir/main.cpp.obj: ../googletest-master/googletest/include/gtest/internal/gtest-port.h
 CMakeFiles/lab2.dir/main.cpp.obj: ../googletest-master/googletest/include/gtest/internal/gtest-string.h
 CMakeFiles/lab2.dir/main.cpp.obj: ../googletest-master/googletest/include/gtest/internal/gtest-type-util.h
-CMakeFiles/lab2.dir/main.cpp.obj: ../game.h
 CMakeFiles/lab2.dir/main.cpp.obj: ../main.cpp
 
 CMakeFiles/lab2.dir/tests.cpp.obj: ../googletest-master/googletest/include/gtest/gtest-death-test.h

@@ -1,11 +1,3 @@
-#include <iostream>
-#include <random>
-#include <stdio.h>
-#include "game.h"
-#include <string>
-#include <cstring>
-#include <functional>
-#include <Windows.h>
 #include <gtest/gtest.h>
 
 
@@ -15,30 +7,3 @@ int main(int argc, char *argv[]){
     return RUN_ALL_TESTS();
 }
 
-
-/*
-int main() {
-
-    field wrld;
-    wrld.set(1,1);
-    wrld.set(1,2);
-    wrld.set(1, 3);
-    std:: cout << wrld.nei_num(1, 2);
-    std:: cout << wrld.nei_num(0, 2);
-    std:: cout << wrld.nei_num(2, 2);
-    std::cout << '\n';
-    std::cout << '\n';
-    //wrld.draw();
-    std::cout << wrld;
-    wrld.one_step();
-    std::cout << '\n';
-    //wrld.draw();
-    std::cout << wrld;
-    wrld.one_step();
-    std::cout << '\n';
-    //wrld.draw();
-    std::cout << wrld;
-    wrld.save("file");
-
-    return 0;
-}*/
