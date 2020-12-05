@@ -181,9 +181,8 @@ void field::update_state(int a, int b) {
     }
 }
 
-void field::show_states(int height, int width) {
-    height = 9 - height;
-    std::cout << "pre-state: " << this->pre_wrld[height][width] << " state: " << this->wrld[height][width];
+bool field::show_states(int height, int width) {
+    return this->wrld[9 - height][width];
 }
 
 

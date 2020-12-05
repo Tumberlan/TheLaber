@@ -20,14 +20,13 @@ public:
     field();
     ~field();
     void draw(int a, int b)const;
-    void pre_draw(int a, int b)const;
     int nei_num(int a, int b)const;
     friend std::ostream& operator<<(std::ostream& os, const field& game);
     void set(int height, int width);
     void clear(int height, int width);
     void one_step();
     void back_step();
-    void show_states(int height, int width);
+    bool show_states(int height, int width);
     void reset();
     void save(const std::string& path) const;
     void load(const std::string& path);
