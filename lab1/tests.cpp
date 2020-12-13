@@ -1,88 +1,94 @@
-//
-// Created by Igor on 29.10.2020.
-//
-
 #include <gtest/gtest.h>
 #include "rna.h"
 
 namespace {
-    class ClassDeclaration : public testing::Test {
+    class rna_testing : public testing::Test {
     public:
-        RNA rnk1,rnk2,rnk3;
+        RNA r1,r2,r3;
     };
 }
 
-TEST_F(ClassDeclaration,test_eq){
-    rnk1[0] = A;
-    EXPECT_EQ(rnk1[0],A);
-    rnk1[0] = rnk2[1] = G;
-    EXPECT_EQ(rnk1[0],G);
-    EXPECT_EQ(rnk2[1],G);
+
+TEST_F(rna_testing,equality){
+    r1[0] = RNA::A;
+    EXPECT_EQ(r1[0],RNA::A);
+    r1[0] = r2[1] = RNA::T;
+    EXPECT_EQ(r1[0],RNA::T);
+    EXPECT_EQ(r2[1],RNA::T);
 }
 
-TEST_F(ClassDeclaration,test_plus){
+TEST_F(rna_testing,plus){
     for (int i = 0; i < 100; i++){
-        rnk1[i] = C;
-        rnk2[i] = T;
+        r1[i] = RNA::G;
+        r2[i] = RNA::A;
     }
-    rnk3 = rnk1 + rnk2;
+    r3 = r1 + r2;
     for (int i = 0; i < 100; i++){
-        EXPECT_EQ(rnk3[i],rnk1[i]);
-        EXPECT_EQ(rnk3[i+100],rnk2[i]);
+        ASSERT_EQ(r3[i],r1[i]);
+        ASSERT_EQ(r3[i+100],r2[i]);
     }
 }
-/*
-TEST_F(ClassDeclaration,test_100mil){
-    for (int i = 0; i < 100000000; i++){
-        rnk1[i] = C;
-    }
-    for (int i = 91; i < 100000000; i+=20317){
-        EXPECT_EQ(rnk1[i],C);
-    }
 
-}*/
+TEST_F(rna_testing,one_million){
+    for (int i = 0; i < 1000000; i++){
+        r1[i] = RNA::G;
+    }
+    for (int i = 91; i < 1000000; i+=20317){
+        ASSERT_EQ(r1[i],RNA::G);
+    }
+}
 
-TEST_F(ClassDeclaration,test_cpy){
-    for (int i = 0; i < 1000; i+=3){
-        rnk1[i] = G;
-        rnk1[i+1] = A;
-        rnk1[i+2] = C;
+TEST_F(rna_testing,copy){
+    for (int i = 0; i < 200; i+=2){
+        r1[i] = RNA::G;
+        r1[i+1] = RNA::T;
     }
-    rnk2 = rnk1;
-    EXPECT_EQ(rnk1,rnk2);
-    for (int i = 0; i < 1000; i++){
-        EXPECT_EQ(rnk1[i],rnk2[i]);
+    r2 = r1;
+    ASSERT_EQ(r1,r2);
+    for (int i = 0; i < 200; i++){
+        ASSERT_EQ(r1[i],r2[i]);
     }
-}
-/*
-TEST_F(ClassDeclaration,test_split){
-    for (int i = 0; i < 100; i+= 2){
-        rnk1[i] = G;
-        rnk1[i+1] = A;
-    }
-    rnk2 = rnk1.split(15);
-    for (int i = 15; i < 100; i++){
-        EXPECT_EQ(rnk1[i],rnk2[i-15]);
+    const RNA rnk4(r1);
+    ASSERT_EQ(r1,rnk4);
+    for (int i = 0; i < 200; i++){
+        ASSERT_EQ(rnk4[i],r1[i]);
     }
 }
-*/
-TEST_F(ClassDeclaration,test_isComplementary){
-    for (int i = 0; i < 1000; i+=3){
-        rnk1[i] = G;
-        rnk1[i+1] = A;
-        rnk1[i+2] = C;
+
+TEST_F(rna_testing,split){
+    for (int i = 0; i < 100; i+=2){
+        r1[i] = RNA::G;
+        r1[i+1] = RNA::C;
     }
-    rnk2 = !rnk1;
-    EXPECT_TRUE(rnk2.is_complementary(rnk1));
-    rnk2[10] = T;
-    rnk2[11] = T;
-    EXPECT_FALSE(rnk2.is_complementary(rnk1));
+    r2 = r1.split(20);
+    for (int i = 0; i < 100 - 20; i++){
+        ASSERT_EQ(r1[i+20],r2[i]);
+    }
 }
-/*
-TEST_F(ClassDeclaration,test_big_rad){
-    rnk1[0] = C;
-    rnk1[1000000000] = rnk1[0];
-    EXPECT_EQ(rnk1[0],C);
-    EXPECT_EQ(rnk1[1000000000],C);
+
+TEST_F(rna_testing,empty_split){
+    r2 = r1.split(100);
+    for(int i = 0; i < 100; i++){
+        ASSERT_EQ(r1[i],NULL);
+    }
 }
-*/
+
+
+TEST_F(rna_testing,complementary){
+    for (int i = 0; i < 200; i+=2){
+        r1[i] = RNA::T;
+        r1[i+1] = RNA::A;
+    }
+    r2 = !r1;
+    ASSERT_TRUE(r2.is_complementary(r1));
+    r2[10] = RNA::T;
+    r2[11] = RNA::T;
+    ASSERT_FALSE(r2.is_complementary(r1));
+}
+
+
+TEST_F(rna_testing,unavailibale_posititon){
+    for(int i = 0; i < 100000; i++){
+        ASSERT_EQ(r1[i],NULL);
+    }
+}
