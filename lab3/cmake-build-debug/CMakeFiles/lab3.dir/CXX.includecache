@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/Igor/ProgProjects/TheLaber/lab3/map.cpp
+map.h
+C:/Users/Igor/ProgProjects/TheLaber/lab3/map.h
+random
+-
+cmath
+-
+
+C:/Users/Igor/ProgProjects/TheLaber/lab3/map.h
+string
+-
+vector
+-
+random
+-
+iostream
+-
+time.h
+-
+
