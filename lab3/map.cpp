@@ -6,6 +6,25 @@
 #include <random>
 #include <cmath>
 
+void just_map::set_X(int val){
+    X = val;
+}
+
+int just_map::get_X() {
+    return X;
+}
+
+void just_map::set_Y(int val){
+    Y = val;
+}
+
+int just_map::get_Y() {
+    return Y;
+}
+
+
+
+
 cell_value random_state() {
     int a = rand() % 10;
     if (a == 1){
@@ -79,27 +98,16 @@ void just_map::set_robot() {
 }
 
 
-
-std::ostream& operator<<(std::ostream& os, const just_map& map_t){
-
-    for(int i = 0; i < map_t.X; i++){
-        for(int j = 0; j < map_t.Y; j++){
-            std::cout << to_map_sign(map_t.map[i][j]) << " ";
-        }
-        std::cout << '\n';
-    }
-
-    std::cout << '\n';
-    return os;
+void just_map::set_map(int x, int y, cell_value val) {
+    map[x][y] = val;
 }
 
+cell_value just_map::get_map(int x, int y) {
+    return map[x][y];
+}
 
 robot_map::~robot_map(){
     data.clear();
-}
-
-void robot_map::init_map() {
-
 }
 
 bool robot_map::is_discovered(int x, int y) const {

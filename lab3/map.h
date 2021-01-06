@@ -28,10 +28,11 @@ cell_value random_state();
 char to_map_sign(cell_value a);
 
 class just_map{
-public:
-    cell_value ** map;
+private:
     int X;
     int Y;
+    cell_value ** map;
+public:
     int robot_x;
     int robot_y;
     int apple_x;
@@ -44,6 +45,12 @@ public:
     int sapper_y;
 
     just_map();
+    void set_X(int val);
+    int get_X();
+    void set_Y(int val);
+    int get_Y();
+    void set_map(int x, int y, cell_value val);
+    cell_value get_map(int x, int y);
     void set_robot();
 };
 
@@ -81,7 +88,6 @@ public:
 
     ~robot_map();
 
-    void init_map();
     cell_value get_cell(int , int)const;
     bool is_discovered(int, int) const;
     void add_cell(int , int, cell_value);
