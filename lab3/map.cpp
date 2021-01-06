@@ -27,7 +27,7 @@ char to_map_sign(cell_value a){
         return '0';
     }
     if(a == BOMB){
-        return '$';
+        return '*';
     }
     if(a == EMPTY){
         return '.';
@@ -39,14 +39,14 @@ char to_map_sign(cell_value a){
         return 'S';
     }
     if(a == BORDER){
-        return '*';
+        return '^';
     }
     return '?';
 }
 
 just_map::just_map() {
-    int x = rand() % 2 + 10;
-    int y = rand() % 2 + 10;
+    int x = 1000;
+    int y = 1000;
 
     X = x;
     Y = y;
@@ -71,8 +71,6 @@ void just_map::set_robot() {
         b = rand() % Y;
     }
 
-    a = X-1;
-    b = Y-1;
     robot_x = a;
     robot_y = b;
     set_robot_x = a;
@@ -146,4 +144,11 @@ bool robot_map::is_added(int a, int b) {
     return false;
 }
 
-
+bool is_added(int a, int b , std::vector<r_search> r_vector) {
+    for (auto & m : r_vector){
+        if(m.X == a && m.Y == b){
+            return true;
+        }
+    }
+    return false;
+}

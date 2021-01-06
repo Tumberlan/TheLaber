@@ -19,7 +19,8 @@ enum cell_value{
     ROCK,
     BOMB,
     APPLE,
-    BORDER
+    BORDER,
+    BLOCKED
 };
 
 cell_value random_state();
@@ -31,13 +32,16 @@ public:
     cell_value ** map;
     int X;
     int Y;
-    int robot_x = NULL;
-    int robot_y = NULL;
-    int apple_x = NULL;
-    int apple_y = NULL;
-    int set_robot_x = NULL;
-    int set_robot_y = NULL;
-
+    int robot_x;
+    int robot_y;
+    int apple_x;
+    int apple_y;
+    int sap_apple_x;
+    int sap_apple_y;
+    int set_robot_x;
+    int set_robot_y;
+    int sapper_x;
+    int sapper_y;
 
     just_map();
     void set_robot();
@@ -58,7 +62,16 @@ public:
     map_cell();
 };
 
+class r_search: public map_cell{
+public:
+    int to_from_point = 0;
+    int to_go_point = 0;
+    int from_to_sum = 0;
+    int previous_x = NULL;
+    int previous_y = NULL;
+};
 
+bool is_added(int , int, std::vector<r_search>);
 
 class robot_map{
 public:

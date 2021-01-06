@@ -6,14 +6,6 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/Igor/ProgProjects/TheLaber/lab3/map.cpp
-map.h
-C:/Users/Igor/ProgProjects/TheLaber/lab3/map.h
-random
--
-cmath
--
-
 C:/Users/Igor/ProgProjects/TheLaber/lab3/map.h
 string
 -
@@ -24,5 +16,19 @@ random
 iostream
 -
 time.h
+-
+
+C:/Users/Igor/ProgProjects/TheLaber/lab3/robot.cpp
+robot.h
+C:/Users/Igor/ProgProjects/TheLaber/lab3/robot.h
+
+C:/Users/Igor/ProgProjects/TheLaber/lab3/robot.h
+map.h
+C:/Users/Igor/ProgProjects/TheLaber/lab3/map.h
+string
+-
+iostream
+-
+cmath
 -
 
