@@ -29,7 +29,29 @@ void auto_command::set_idx(int val) {
 }
 
 
+cell_value shared_command::get_value() {
+    return value;
+}
 
+void shared_command::set_value(cell_value val) {
+    value = val;
+}
+
+int shared_command::get_X() {
+    return X;
+}
+
+void shared_command::set_X(int val) {
+    X = val;
+}
+
+int shared_command::get_Y() {
+    return Y;
+}
+
+void shared_command::set_Y(int val) {
+    Y = val;
+}
 
 
 
@@ -355,6 +377,23 @@ int robot::step_amount(std::string str, int a){
     return result;
 }
 
+
+void robot::take_fixes(shared_command c) {
+    for (int i = 0; i < map.data.size(); i++){
+        if(map.data[i].get_value() == ROBOT_SAPPER){
+            map.data[i].set_value(c.get_value());
+        }
+    }
+    for (int i = 0; i < map.data.size(); i++){
+        if(map.data[i].get_X() == c.get_X() && map.data[i].get_Y() == c.get_Y()){
+            map.data[i].set_value(ROBOT_SAPPER);
+        }
+    }
+}
+
+robot_map robot::give_map_to_sapper() {
+    return map;
+}
 
 // РЕАЛИЗАЦИЯ СКАНЕРА
 void robot::add_siblings(int x, int y, int to_from, std::vector<r_search>& from_r, std::vector<r_search>& to_r) {
@@ -1468,6 +1507,33 @@ void robot::make_sapp_move(int tmp_sap_x, int tmp_sap_y,int maximum_x, int maxim
     //std::cout << " NO SAPP MOVE" << '\n';
 }
 
+sapper::sapper() {
+    X = 0;
+    Y = 0;
+}
+
+void sapper::get_map_from_collector(robot_map got_one) {
+    map = got_one;
+    for (int i = 0; i < map.data.size(); i++){
+        if (map.data[i].get_value() == ROBOT_SAPPER){
+            X = map.data[i].get_X();
+            Y = map.data[i].get_Y();
+        }
+    }
+}
+
+void sapper::take_fixes(shared_command c) {
+    for (int i = 0; i < map.data.size(); i++){
+        if(map.data[i].get_value() == ROBOT_COLLECTOR){
+            map.data[i].set_value(c.get_value());
+        }
+    }
+    for (int i = 0; i < map.data.size(); i++){
+        if(map.data[i].get_X() == c.get_X() && map.data[i].get_Y() == c.get_Y()){
+            map.data[i].set_value(ROBOT_COLLECTOR);
+        }
+    }
+}
 
 
 

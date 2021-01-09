@@ -32,12 +32,12 @@ enum robot_mode{
 
 class shared_command{
 private:
-    move_command value;
+    cell_value value;
     int X;
     int Y;
 public:
-    move_command get_value();
-    void set_value(move_command val);
+    cell_value get_value();
+    void set_value(cell_value val);
     int get_X();
     void set_X(int val);
     int get_Y();
@@ -120,9 +120,8 @@ public:
     int Y;
     robot_map map;
     bool can_smash_apple = false;
-    
-    void set_sapper(just_map &god_map);
-    void destroy_sapper(just_map &god_map);
+
+    sapper();
     void move_sapper(move_command order, just_map &god_map);
 
     void shortest_sapp(int x_in_search, int y_in_search,int maximum_x, int maximum_y, cell_value** tmp_map, just_map& god_map);
