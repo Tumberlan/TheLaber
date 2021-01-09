@@ -392,7 +392,11 @@ void robot::take_fixes(shared_command c) {
 }
 
 robot_map robot::give_map_to_sapper() {
-    return map;
+    robot_map new_one;
+    for(int i = 0; i < map.data.size(); i++){
+        new_one.add_cell(map.data[i].get_X(), map.data[i].get_Y(), map.data[i].get_value());
+    }
+    return new_one;
 }
 
 // РЕАЛИЗАЦИЯ СКАНЕРА
@@ -443,7 +447,48 @@ void take_step_back(int iterator, r_search tmp, std::vector<auto_command>& way_o
 
 
 
+bool is_blocked(int i, int j, int max_x, int max_y, cell_value **tmp_map){
+    bool left = true;
+    bool down = true;
+    bool right = true;
+    bool up = true;
+    if (i+1 > 2*max_x){
+        right = false;
+    }else {
+        if(tmp_map[i+1][j] == BORDER || tmp_map[i+1][j] == BOMB || tmp_map[i+1][j] == ROCK || tmp_map[i+1][j] == ROBOT_SAPPER || tmp_map[i+1][j] == MYSTERY){
+            right = false;
+        }
+    }
+    if(i-1 < 0){
+        left = false;
+    }else{
+        if(tmp_map[i-1][j] == BORDER || tmp_map[i-1][j] == BOMB || tmp_map[i-1][j] == ROCK || tmp_map[i-1][j] == ROBOT_SAPPER || tmp_map[i-1][j] == MYSTERY){
+            left = false;
+        }
+    }
+    if(j+1 > 2*max_y){
+        up = false;
+    }else{
+        if(tmp_map[i][j+1] == BORDER || tmp_map[i][j+1] == BOMB || tmp_map[i][j+1] == ROCK || tmp_map[i][j+1] == ROBOT_SAPPER || tmp_map[i][j+1] == MYSTERY){
+            up = false;
+        }
+    }
+    if(j-1 < 0){
+        down = false;
+    }else {
+        if(tmp_map[i][j-1] == BORDER || tmp_map[i][j-1] == BOMB || tmp_map[i][j-1] == ROCK || tmp_map[i][j-1] == ROBOT_SAPPER || tmp_map[i][j-1] == MYSTERY){
+            down = false;
+        }
+    }
+
+    if(!up && !down && !left && !right){
+        return true;
+    }
+    return false;
+}
+
 void robot::shortest_way(int x_in_search, int y_in_search,int maximum_x, int maximum_y, cell_value** tmp_map , just_map& god_map) {
+
 
     int tmp_rob_x = X + maximum_x;
     int tmp_rob_y = Y + maximum_y;
@@ -590,47 +635,6 @@ void robot::shortest_way(int x_in_search, int y_in_search,int maximum_x, int max
 
 }
 
-bool is_blocked(int i, int j, int max_x, int max_y, cell_value **tmp_map){
-    bool left = true;
-    bool down = true;
-    bool right = true;
-    bool up = true;
-    if (i+1 > 2*max_x){
-        right = false;
-    }else {
-        if(tmp_map[i+1][j] == BORDER || tmp_map[i+1][j] == BOMB || tmp_map[i+1][j] == ROCK || tmp_map[i+1][j] == ROBOT_SAPPER || tmp_map[i+1][j] == MYSTERY){
-            right = false;
-        }
-    }
-    if(i-1 < 0){
-        left = false;
-    }else{
-        if(tmp_map[i-1][j] == BORDER || tmp_map[i-1][j] == BOMB || tmp_map[i-1][j] == ROCK || tmp_map[i-1][j] == ROBOT_SAPPER || tmp_map[i-1][j] == MYSTERY){
-            left = false;
-        }
-    }
-    if(j+1 > 2*max_y){
-        up = false;
-    }else{
-        if(tmp_map[i][j+1] == BORDER || tmp_map[i][j+1] == BOMB || tmp_map[i][j+1] == ROCK || tmp_map[i][j+1] == ROBOT_SAPPER || tmp_map[i][j+1] == MYSTERY){
-            up = false;
-        }
-    }
-    if(j-1 < 0){
-        down = false;
-    }else {
-        if(tmp_map[i][j-1] == BORDER || tmp_map[i][j-1] == BOMB || tmp_map[i][j-1] == ROCK || tmp_map[i][j-1] == ROBOT_SAPPER || tmp_map[i][j-1] == MYSTERY){
-            down = false;
-        }
-    }
-
-    if(!up && !down && !left && !right){
-        return true;
-    }
-    return false;
-}
-
-
 
 
 void robot::autobot(int N, just_map &god_map) {
@@ -668,6 +672,8 @@ void robot::autobot(int N, just_map &god_map) {
         }else {
             maximum_y = abs(min_y);
         }
+
+        // 00 01 0-2
         cell_value ** tmp_map;
         tmp_map = new cell_value*[2*maximum_x+1];
 
@@ -726,7 +732,7 @@ void robot::autobot(int N, just_map &god_map) {
 
 // РЕАЛИЗАЦИЯ СБОРЩИКА ЯБЛОК
 
-void robot::shortest_coll(int x_in_search, int y_in_search, int maximum_x, int maximum_y, cell_value **tmp_map,just_map &god_map) {
+bool robot::shortest_coll(int x_in_search, int y_in_search, int maximum_x, int maximum_y, cell_value **tmp_map,just_map &god_map) {
     int tmp_rob_x = X + maximum_x;
     int tmp_rob_y = Y + maximum_y;
 
@@ -792,6 +798,7 @@ void robot::shortest_coll(int x_in_search, int y_in_search, int maximum_x, int m
 
 
 
+    bool trap;
     int x_to_find;
     int y_to_find;
     int itr = 1;
@@ -807,15 +814,23 @@ void robot::shortest_coll(int x_in_search, int y_in_search, int maximum_x, int m
                     if (i.get_from_to_sum() == tmp.get_from_to_sum()) {
                         if (i.get_to_go_point() < tmp.get_to_from_point()) {
                             tmp = i;
+                            trap = false;
                         }
                     }
                     if (i.get_from_to_sum() < tmp.get_from_to_sum()) {
                         tmp = i;
+                        trap = false;
                     }
                 }
             }
         }
 
+        if(trap){
+            reach_data.clear();
+            reachable.clear();
+            explored.clear();
+            return false;
+        }
 
         explored.push_back(tmp);
         for (int i = 0; i < reachable.size(); i++){
@@ -836,6 +851,7 @@ void robot::shortest_coll(int x_in_search, int y_in_search, int maximum_x, int m
 
     // обратный путь по explored-у
     r_search tmp;
+    r_search ex_tmp;
     for(auto & i : explored){
         if((abs(i.get_X() - x_in_search)  + abs(i.get_Y()- y_in_search)) == 1){
             tmp = i;
@@ -844,10 +860,12 @@ void robot::shortest_coll(int x_in_search, int y_in_search, int maximum_x, int m
 
     std::vector<auto_command> way_out;
     int iterator = 1;
+
     while(tmp.get_X() != tmp_rob_x || tmp.get_Y() != tmp_rob_y){
         take_step_back(iterator, tmp, way_out);
         for (int i = 0; i < explored.size(); i++){
             if(explored[i].get_X() == tmp.get_previous_x() && explored[i].get_Y() == tmp.get_previous_y()){
+                ex_tmp.set_value(tmp.get_value());
                 tmp = explored[i];
             }
         }
@@ -856,6 +874,79 @@ void robot::shortest_coll(int x_in_search, int y_in_search, int maximum_x, int m
     }
 
 
+    if(ex_tmp.get_value() == ROBOT_SAPPER){
+        reachable.clear();
+        explored.clear();
+        way_out.clear();
+        trap = true;
+        itr = 1;
+        is_reached = false;
+        while(!is_reached){
+            tmp.set_to_go_point(1000);
+            tmp.set_to_from_point(1000);
+            tmp.set_from_to_sum(2000);
+            for(auto & i : reachable){
+                if(i.get_from_to_sum() <= tmp.get_from_to_sum() && i.get_value() != ROBOT_SAPPER){
+                    if(!is_added(i.get_X(), i.get_Y(), explored)) {
+                        if (i.get_from_to_sum() == tmp.get_from_to_sum()) {
+                            if (i.get_to_go_point() < tmp.get_to_from_point()) {
+                                tmp = i;
+                                trap = false;
+                            }
+                        }
+                        if (i.get_from_to_sum() < tmp.get_from_to_sum()) {
+                            tmp = i;
+                            trap = false;
+                        }
+                    }
+                }
+            }
+            if(trap){
+                reach_data.clear();
+                reachable.clear();
+                explored.clear();
+                way_out.clear();
+                return false;
+            }
+
+
+            explored.push_back(tmp);
+            for (int i = 0; i < reachable.size(); i++){
+                if(reachable[i].get_X() == tmp.get_X() && reachable[i].get_Y() == tmp.get_Y()){
+                    reachable.erase(reachable.begin() + i);
+                }
+            }
+            add_siblings(tmp.get_X(), tmp.get_Y(), tmp.get_to_from_point(), reach_data, reachable);
+
+            if((abs(tmp.get_X() - x_in_search) + abs(tmp.get_Y() - y_in_search)) == 1){
+                is_reached = true;
+            }
+
+            itr++;
+
+        }
+
+
+        // обратный путь по explored-у
+        for(auto & i : explored){
+            if((abs(i.get_X() - x_in_search)  + abs(i.get_Y()- y_in_search)) == 1){
+                tmp = i;
+            }
+        }
+
+        iterator = 1;
+
+        while(tmp.get_X() != tmp_rob_x || tmp.get_Y() != tmp_rob_y){
+            take_step_back(iterator, tmp, way_out);
+            for (int i = 0; i < explored.size(); i++){
+                if(explored[i].get_X() == tmp.get_previous_x() && explored[i].get_Y() == tmp.get_previous_y()){
+                    tmp = explored[i];
+                }
+            }
+            iterator++;
+
+        }
+    }
 
     iterator--;
     for(int i = 0; i < way_out.size(); i++){
@@ -868,11 +959,17 @@ void robot::shortest_coll(int x_in_search, int y_in_search, int maximum_x, int m
     reachable.clear();
     explored.clear();
     way_out.clear();
+    return true;
 }
 
-void robot::make_collector_move(int tmp_rob_x, int tmp_rob_y, int maximum_x, int maximum_y,std::vector<map_cell> &apple_positions, cell_value **tmp_map, just_map &god_map) {
+bool robot::make_collector_move(int tmp_rob_x, int tmp_rob_y, int maximum_x, int maximum_y,std::vector<map_cell> &apple_positions, cell_value **tmp_map, just_map &god_map, shared_command *c) {
 
 
+    if(can_take_apple){
+        (*c).set_value(APPLE);
+    }else{
+        (*c).set_value(EMPTY);
+    }
     int tmp_sum = -1;
     map_cell tmp;
 
@@ -888,8 +985,9 @@ void robot::make_collector_move(int tmp_rob_x, int tmp_rob_y, int maximum_x, int
 
 
 
+    bool res = true;
     if (abs(tmp.get_X() - (X + maximum_x)) + abs(tmp.get_Y() - (Y + maximum_y)) > 1) {
-        shortest_coll(tmp.get_X(), tmp.get_Y(), maximum_x, maximum_y, tmp_map, god_map);
+        res = shortest_coll(tmp.get_X(), tmp.get_Y(), maximum_x, maximum_y, tmp_map, god_map);
     } else {
         int x_move = tmp.get_X() - (X + maximum_x);
         int y_move = tmp.get_Y() - (Y + maximum_y);
@@ -902,6 +1000,7 @@ void robot::make_collector_move(int tmp_rob_x, int tmp_rob_y, int maximum_x, int
         } else if (x_move == 0 && y_move == -1) {
             move(LEFT, god_map);
         }
+
         grab(god_map);
         for (int i = 0; i < apple_positions.size(); i++) {
             if (apple_positions[i].get_X() == tmp.get_X() && apple_positions[i].get_Y() == tmp.get_Y()) {
@@ -909,8 +1008,15 @@ void robot::make_collector_move(int tmp_rob_x, int tmp_rob_y, int maximum_x, int
             }
         }
 
-    }
 
+    }
+    (*c).set_X(X);
+    (*c).set_Y(Y);
+
+    if(!res){
+        return false;
+    }
+    return true;
    // std:: cout <<" NOT COLL MOVE"<<'\n';
 }
 
@@ -971,6 +1077,12 @@ void robot::apple_collector(just_map& god_map){
         }
     }
 
+    sapper big_s;
+    if(sapp_on){
+        big_s.get_map_from_collector(give_map_to_sapper());
+    }
+
+
 
     int tmp_rob_x;
     int tmp_rob_y;
@@ -1016,11 +1128,23 @@ void robot::apple_collector(just_map& god_map){
 
 
 
+    bool is_collector_moved = true;
+    bool is_sapper_moved = true;
     while (apple_positions.size() != 0) {
 
-        make_collector_move(X, Y, maximum_x, maximum_y, apple_positions, tmp_map,god_map);
+
+        shared_command coll_command;
+        is_collector_moved = make_collector_move(X, Y, maximum_x, maximum_y, apple_positions, tmp_map,god_map, &coll_command);
+        if(sapp_on && is_collector_moved){
+            big_s.take_fixes(coll_command);
+        }
+        shared_command sapp_command;
         if(sapp_on) {
-            make_sapp_move(sapper_x, sapper_y, maximum_x, maximum_y, bomb_positions, tmp_map, god_map);
+
+            is_sapper_moved = big_s.make_sapp_move( maximum_x, maximum_y, bomb_positions, tmp_map, god_map, &sapp_command);
+            if(is_sapper_moved) {
+                take_fixes(sapp_command);
+            }
         }
         draw_robot_map(god_map);
     }
@@ -1052,8 +1176,6 @@ void robot::set_sapper(just_map &god_map) {
     god_map.set_sapper_x(tmp_x+god_map.get_plug_robot_x());
     god_map.set_sapper_y(tmp_y+god_map.get_plug_robot_y());
     god_map.set_map(god_map.get_sapper_x(), god_map.get_sapper_y(), ROBOT_SAPPER);
-    sapper_x = tmp_x;
-    sapper_y = tmp_y;
     sapp_on = true;
 }
 
@@ -1073,25 +1195,19 @@ void robot::destroy_sapper(just_map &god_map){
     god_map.set_sapper_x(-1);
     god_map.set_sapper_y(-1);
     god_map.set_map(tmp_x+god_map.get_plug_robot_x(), tmp_y+god_map.get_plug_robot_y(), EMPTY);
-    sapper_x = -1;
-    sapper_y = -1;
     sapp_on = false;
 }
 
-void robot::move_sapper(move_command order, just_map &god_map) {
+void sapper::move_sapper(move_command order, just_map &god_map) {
     cell_value tmp;
     cell_value border_check;
     if (order == RIGHT){
         for(auto & m : map.data){
-            if(m.get_X() == sapper_x && m.get_Y() == sapper_y+1){
+            if(m.get_X() == X && m.get_Y() == Y+1){
                 border_check = m.get_value();
             }
         }
         if(border_check != BORDER) {
-            tmp = god_map.get_map(god_map.get_sapper_x(), god_map.get_sapper_y() + 1);
-            if(tmp == ROBOT_COLLECTOR){
-                move(RIGHT, god_map);
-            }
             tmp = god_map.get_map(god_map.get_sapper_x(), god_map.get_sapper_y() + 1);
             if (tmp == EMPTY || tmp == BOMB || tmp == APPLE) {
 
@@ -1101,7 +1217,7 @@ void robot::move_sapper(move_command order, just_map &god_map) {
                     god_map.set_map(god_map.get_sapper_x(),god_map.get_sapper_y(), APPLE);
                     on_apple = true;
                     for(auto &m : map.data){
-                        if(m.get_X() == sapper_x && m.get_Y() == sapper_y){
+                        if(m.get_X() == X && m.get_Y() == Y){
                             m.set_value(APPLE);
                         }
                     }
@@ -1118,7 +1234,7 @@ void robot::move_sapper(move_command order, just_map &god_map) {
                 if(!on_apple){
                     god_map.set_map(god_map.get_sapper_x(), god_map.get_sapper_y(), EMPTY);
                     for (auto &m : map.data) {
-                        if (m.get_X() == sapper_x && m.get_Y() == sapper_y) {
+                        if (m.get_X() == X && m.get_Y() == Y) {
                             m.set_value(EMPTY);
                         }
                     }
@@ -1129,10 +1245,10 @@ void robot::move_sapper(move_command order, just_map &god_map) {
                 }
 
                 god_map.set_map(god_map.get_sapper_x(), god_map.get_sapper_y()+1, ROBOT_SAPPER);
-                sapper_y += 1;
+                Y += 1;
 
                 for (auto &m : map.data) {
-                    if (m.get_X() == sapper_x && m.get_Y() == sapper_y) {
+                    if (m.get_X() == X && m.get_Y() == Y) {
                         m.set_value(ROBOT_SAPPER);
                     }
                 }
@@ -1142,15 +1258,11 @@ void robot::move_sapper(move_command order, just_map &god_map) {
     }
     if (order == DOWN){
         for(auto & m : map.data){
-            if(m.get_X() == sapper_x+1 && m.get_Y() == sapper_y){
+            if(m.get_X() == X+1 && m.get_Y() == Y){
                 border_check = m.get_value();
             }
         }
         if(border_check != BORDER) {
-            tmp = god_map.get_map(god_map.get_sapper_x()+1, god_map.get_sapper_y());
-            if(tmp == ROBOT_COLLECTOR){
-                move(DOWN, god_map);
-            }
             tmp = god_map.get_map(god_map.get_sapper_x()+1, god_map.get_sapper_y());
             if (tmp == EMPTY || tmp == BOMB || tmp == APPLE) {
 
@@ -1160,7 +1272,7 @@ void robot::move_sapper(move_command order, just_map &god_map) {
                     god_map.set_map(god_map.get_sapper_x(), god_map.get_sapper_y(), APPLE);
                     on_apple = true;
                     for(auto &m : map.data){
-                        if(m.get_X() == sapper_x && m.get_Y() == sapper_y){
+                        if(m.get_X() == X && m.get_Y() == Y){
                             m.set_value(APPLE);
                         }
                     }
@@ -1177,16 +1289,16 @@ void robot::move_sapper(move_command order, just_map &god_map) {
                 if(!on_apple){
                     god_map.set_map(god_map.get_sapper_x(), god_map.get_sapper_y(), EMPTY);
                     for (auto &m : map.data) {
-                        if (m.get_X() == sapper_x && m.get_Y() == sapper_y) {
+                        if (m.get_X() == X && m.get_Y() == Y) {
                             m.set_value(EMPTY);
                         }
                     }
                 }
                 god_map.set_map(god_map.get_sapper_x()+1, god_map.get_sapper_y(), ROBOT_SAPPER);
-                sapper_x += 1;
+                X += 1;
 
                 for (auto &m : map.data) {
-                    if (m.get_X() == sapper_x && m.get_Y() == sapper_y) {
+                    if (m.get_X() == X && m.get_Y() == Y) {
                         m.set_value(ROBOT_SAPPER);
                     }
                 }
@@ -1196,17 +1308,12 @@ void robot::move_sapper(move_command order, just_map &god_map) {
     }
     if (order == LEFT){
         for(auto & m : map.data){
-            if(m.get_X() == sapper_x && m.get_Y() == sapper_y-1){
+            if(m.get_X() == X && m.get_Y() == Y-1){
                 border_check = m.get_value();
             }
         }
         if(border_check != BORDER) {
             tmp = god_map.get_map(god_map.get_sapper_x(), god_map.get_sapper_y()-1);
-            if(tmp == ROBOT_COLLECTOR){
-                move(LEFT, god_map);
-            }
-            tmp = god_map.get_map(god_map.get_sapper_x(), god_map.get_sapper_y()-1);
-
             if (tmp == EMPTY || tmp == BOMB || tmp == APPLE) {
                 bool on_apple = false;
                 //std::cout << god_map.sap_apple_x << " " << god_map.sap_apple_y << " sap " << god_map.sapper_x << " " << god_map.sapper_y << '\n';
@@ -1214,7 +1321,7 @@ void robot::move_sapper(move_command order, just_map &god_map) {
                     god_map.set_map(god_map.get_sapper_x(), god_map.get_sapper_y(), APPLE);
                     on_apple = true;
                     for(auto &m : map.data){
-                        if(m.get_X() == sapper_x && m.get_Y() == sapper_y){
+                        if(m.get_X() == X && m.get_Y() == Y){
                             m.set_value(APPLE);
                         }
                     }
@@ -1230,17 +1337,17 @@ void robot::move_sapper(move_command order, just_map &god_map) {
                 if(!on_apple){
                     god_map.set_map(god_map.get_sapper_x(), god_map.get_sapper_y(), EMPTY);
                     for (auto &m : map.data) {
-                        if (m.get_X() == sapper_x && m.get_Y() == sapper_y) {
+                        if (m.get_X() == X && m.get_Y() == Y) {
                             m.set_value(EMPTY);
                         }
                     }
                 }
 
                 god_map.set_map(god_map.get_sapper_x(), god_map.get_sapper_y()-1, ROBOT_SAPPER);
-                sapper_y -= 1;
+                Y -= 1;
 
                 for (auto &m : map.data) {
-                    if (m.get_X() == sapper_x && m.get_Y() == sapper_y) {
+                    if (m.get_X() == X && m.get_Y() == Y) {
                         m.set_value(ROBOT_SAPPER);
                     }
                 }
@@ -1250,15 +1357,11 @@ void robot::move_sapper(move_command order, just_map &god_map) {
     }
     if (order == UP){
         for(auto & m : map.data){
-            if(m.get_X() == sapper_x-1 && m.get_Y() == sapper_y){
+            if(m.get_X() == X-1 && m.get_Y() == Y){
                 border_check = m.get_value();
             }
         }
         if(border_check != BORDER) {
-            tmp = god_map.get_map(god_map.get_sapper_x()-1, god_map.get_sapper_y());
-            if(tmp == ROBOT_COLLECTOR){
-                move(UP, god_map);
-            }
             tmp = god_map.get_map(god_map.get_sapper_x()-1, god_map.get_sapper_y());
             if (tmp == EMPTY || tmp == BOMB || tmp == APPLE) {
 
@@ -1268,7 +1371,7 @@ void robot::move_sapper(move_command order, just_map &god_map) {
                     god_map.set_map(god_map.get_sapper_x(),god_map.get_sapper_y(), APPLE);
                     on_apple = true;
                     for(auto &m : map.data){
-                        if(m.get_X() == sapper_x && m.get_Y() == sapper_y){
+                        if(m.get_X() == X && m.get_Y() == Y){
                             m.set_value(APPLE);
                         }
                     }
@@ -1285,17 +1388,17 @@ void robot::move_sapper(move_command order, just_map &god_map) {
                 if(!on_apple){
                     god_map.set_map(god_map.get_sapper_x(),god_map.get_sapper_y(), EMPTY);
                     for (auto &m : map.data) {
-                        if (m.get_X() == sapper_x && m.get_Y() == sapper_y) {
+                        if (m.get_X() == X && m.get_Y() == Y) {
                             m.set_value(EMPTY);
                         }
                     }
                 }
 
                 god_map.set_map(god_map.get_sapper_x()-1,god_map.get_sapper_y(), ROBOT_SAPPER);
-                sapper_x -= 1;
+                X -= 1;
 
                 for (auto &m : map.data) {
-                    if (m.get_X() == sapper_x && m.get_Y() == sapper_y) {
+                    if (m.get_X() == X && m.get_Y() == Y) {
                         m.set_value(ROBOT_SAPPER);
                     }
                 }
@@ -1307,14 +1410,38 @@ void robot::move_sapper(move_command order, just_map &god_map) {
 
 
 
+void sapper::add_siblings(int x, int y, int to_from, std::vector<r_search>& from_r, std::vector<r_search>& to_r) {
+    for(auto & i : from_r){
+        if((i.get_X() == x+1 && i.get_Y() == y) || ((i.get_X() == x-1 && i.get_Y() == y)) || ((i.get_X() == x && i.get_Y() == y+1)) || ((i.get_X() == x && i.get_Y() == y-1))){
+            if(is_added(X,Y,to_r)){
+                if(to_from+1 < i.get_to_from_point()){
+                    i.set_to_from_point(to_from+1);
+                    i.set_from_to_sum(i.get_to_from_point() + i.get_to_go_point());
+                    i.set_previous_x(x);
+                    i.set_previous_y(y);
+                }
+            }else{
+                r_search new_cell;
+                new_cell.set_X(i.get_X());
+                new_cell.set_Y(i.get_Y());
+                new_cell.set_previous_x(x);
+                new_cell.set_previous_y(y);
+                new_cell.set_value(i.get_value());
+                new_cell.set_to_from_point(to_from+1);
+                new_cell.set_to_go_point(i.get_to_go_point());
+                new_cell.set_from_to_sum(new_cell.get_to_from_point() + new_cell.get_to_go_point());
+                to_r.push_back(new_cell);
+            }
+        }
+    }
+}
 
 
+bool sapper::shortest_sapp(int x_in_search, int y_in_search,int maximum_x, int maximum_y, cell_value** tmp_map, just_map& god_map){
 
-void robot::shortest_sapp(int x_in_search, int y_in_search,int maximum_x, int maximum_y, cell_value** tmp_map, just_map& god_map){
 
-
-    int tmp_rob_x = sapper_x + maximum_x;
-    int tmp_rob_y = sapper_y + maximum_y;
+    int tmp_rob_x = X + maximum_x;
+    int tmp_rob_y = Y + maximum_y;
 
     std::vector<r_search> reach_data;
 
@@ -1386,6 +1513,7 @@ void robot::shortest_sapp(int x_in_search, int y_in_search,int maximum_x, int ma
 
 
 
+    bool trap = true;
     int x_to_find;
     int y_to_find;
     int itr = 1;
@@ -1401,14 +1529,22 @@ void robot::shortest_sapp(int x_in_search, int y_in_search,int maximum_x, int ma
                         if (i.get_from_to_sum() == tmp.get_from_to_sum()) {
                             if (i.get_to_from_point() < tmp.get_to_from_point()) {
                                 tmp = i;
+                                trap = false;
                             }
                         }
                         if (i.get_from_to_sum() < tmp.get_from_to_sum()) {
                             tmp = i;
+                            trap = false;
                         }
                     }
                 }
 
+        }
+        if(trap){
+            reach_data.clear();
+            reachable.clear();
+            explored.clear();
+            return false;
         }
 
 
@@ -1431,6 +1567,7 @@ void robot::shortest_sapp(int x_in_search, int y_in_search,int maximum_x, int ma
 
     // обратный путь по explored-у
     r_search tmp;
+    r_search ex_tmp;
     for(auto & i : explored){
         if((abs(i.get_X() - x_in_search)  + abs(i.get_Y()- y_in_search)) == 1){
             tmp = i;
@@ -1443,6 +1580,7 @@ void robot::shortest_sapp(int x_in_search, int y_in_search,int maximum_x, int ma
         take_step_back(iterator, tmp, way_out);
         for (int i = 0; i < explored.size(); i++){
             if(explored[i].get_X() == tmp.get_previous_x() && explored[i].get_Y() == tmp.get_previous_y()){
+                ex_tmp.set_value(tmp.get_value());
                 tmp = explored[i];
             }
         }
@@ -1451,6 +1589,81 @@ void robot::shortest_sapp(int x_in_search, int y_in_search,int maximum_x, int ma
     }
 
 
+    if(ex_tmp.get_value() == ROBOT_COLLECTOR){
+        trap = true;
+        reachable.clear();
+        explored.clear();
+        way_out.clear();
+        itr = 1;
+        is_reached = false;
+        while(!is_reached){
+            tmp.set_to_go_point(1000);
+            tmp.set_to_from_point(1000);
+            tmp.set_from_to_sum(2000);
+            for(auto & i : reachable){
+                if (i.get_from_to_sum() <= tmp.get_from_to_sum() && i.get_value() != ROBOT_COLLECTOR) {
+                    if (!is_added(i.get_X(), i.get_Y(), explored)) {
+                        if (i.get_from_to_sum() == tmp.get_from_to_sum()) {
+                            if (i.get_to_from_point() < tmp.get_to_from_point()) {
+                                tmp = i;
+                                trap = false;
+                            }
+                        }
+                        if (i.get_from_to_sum() < tmp.get_from_to_sum()) {
+                            tmp = i;
+                            trap = false;
+                        }
+                    }
+                }
+
+            }
+            if(trap){
+                reach_data.clear();
+                reachable.clear();
+                explored.clear();
+                way_out.clear();
+                return false;
+            }
+
+
+            explored.push_back(tmp);
+            for (int i = 0; i < reachable.size(); i++){
+                if(reachable[i].get_X() == tmp.get_X() && reachable[i].get_Y() == tmp.get_Y()){
+                    reachable.erase(reachable.begin() + i);
+                }
+            }
+            add_siblings(tmp.get_X(), tmp.get_Y(), tmp.get_to_from_point(), reach_data, reachable);
+
+            if((abs(tmp.get_X() - x_in_search) + abs(tmp.get_Y() - y_in_search)) == 1){
+                is_reached = true;
+            }
+
+            itr++;
+
+        }
+
+
+        // обратный путь по explored-у
+        for(auto & i : explored){
+            if((abs(i.get_X() - x_in_search)  + abs(i.get_Y()- y_in_search)) == 1){
+                tmp = i;
+            }
+        }
+
+
+        iterator = 1;
+        while(tmp.get_X() != tmp_rob_x || tmp.get_Y() != tmp_rob_y){
+            take_step_back(iterator, tmp, way_out);
+            for (int i = 0; i < explored.size(); i++){
+                if(explored[i].get_X() == tmp.get_previous_x() && explored[i].get_Y() == tmp.get_previous_y()){
+                    ex_tmp.set_value(tmp.get_value());
+                    tmp = explored[i];
+                }
+            }
+            iterator++;
+
+        }
+    }
 
     iterator--;
     for(int i = 0; i < way_out.size(); i++){
@@ -1464,27 +1677,31 @@ void robot::shortest_sapp(int x_in_search, int y_in_search,int maximum_x, int ma
     explored.clear();
     way_out.clear();
 
+    return true;
 }
 
-void robot::make_sapp_move(int tmp_sap_x, int tmp_sap_y,int maximum_x, int maximum_y, std::vector<map_cell>& bomb_positions, cell_value** tmp_map, just_map& god_map){
+bool sapper::make_sapp_move(int maximum_x, int maximum_y, std::vector<map_cell>& bomb_positions, cell_value** tmp_map, just_map& god_map, shared_command *c){
 
 
+    c->set_value(EMPTY);
+    bool res = true;
     if(bomb_positions.size() > 0) {
         std::vector<auto_command> bomb_way;
         int tmp_bomb_sum = -1;
         map_cell tmp_bomb;
         for (int iterator = 0; iterator < bomb_positions.size(); iterator++) {
-            if ((abs(bomb_positions[iterator].get_X() - (sapper_x + maximum_x)) +abs(bomb_positions[iterator].get_Y() - (sapper_y + maximum_y)) < tmp_bomb_sum ||tmp_bomb_sum == -1) && bomb_positions[iterator].get_value() == BOMB) {
-                tmp_bomb_sum =abs(bomb_positions[iterator].get_X() - (sapper_x + maximum_x)) + abs(bomb_positions[iterator].get_Y() - (sapper_y + maximum_y));
+            if ((abs(bomb_positions[iterator].get_X() - (X + maximum_x)) +abs(bomb_positions[iterator].get_Y() - (Y + maximum_y)) < tmp_bomb_sum ||tmp_bomb_sum == -1) && bomb_positions[iterator].get_value() == BOMB) {
+                tmp_bomb_sum =abs(bomb_positions[iterator].get_X() - (X + maximum_x)) + abs(bomb_positions[iterator].get_Y() - (Y + maximum_y));
                 tmp_bomb = bomb_positions[iterator];
             }
         }
 
-        if (abs(tmp_bomb.get_X() - (sapper_x + maximum_x)) + abs(tmp_bomb.get_Y() - (sapper_y + maximum_y)) > 1) {
-            shortest_sapp(tmp_bomb.get_X(), tmp_bomb.get_Y(), maximum_x, maximum_y, tmp_map, god_map);
+
+        if (abs(tmp_bomb.get_X() - (X + maximum_x)) + abs(tmp_bomb.get_Y() - (Y + maximum_y)) > 1) {
+            res = shortest_sapp(tmp_bomb.get_X(), tmp_bomb.get_Y(), maximum_x, maximum_y, tmp_map, god_map);
         } else {
-            int x_move = tmp_bomb.get_X() - (sapper_x + maximum_x);
-            int y_move = tmp_bomb.get_Y() - (sapper_y + maximum_y);
+            int x_move = tmp_bomb.get_X() - (X + maximum_x);
+            int y_move = tmp_bomb.get_Y() - (Y + maximum_y);
             if (x_move == 1 && y_move == 0) {
                 move_sapper(DOWN, god_map);
             } else if (x_move == -1 && y_move == 0) {
@@ -1504,6 +1721,13 @@ void robot::make_sapp_move(int tmp_sap_x, int tmp_sap_y,int maximum_x, int maxim
         }
 
     }
+
+    c->set_X(X);
+    c->set_Y(Y);
+    if(!res){
+        return false;
+    }
+    return true;
     //std::cout << " NO SAPP MOVE" << '\n';
 }
 
@@ -1580,14 +1804,6 @@ void robot::ask_command(just_map& god_map) {
                 set_sapper(god_map);
             } else if (str == "off") {
                 destroy_sapper(god_map);
-            }else if (str == "up") {
-                move_sapper(UP, god_map);
-            } else if (str == "down") {
-                move_sapper(DOWN, god_map);
-            } else if (str == "right") {
-                move_sapper(RIGHT, god_map);
-            } else if (str == "left") {
-                move_sapper(LEFT, god_map);
             }
             draw_robot_map(god_map);
         }else if (str == "end") {

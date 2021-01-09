@@ -6,16 +6,6 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/Igor/ProgProjects/TheLaber/lab3/main.cpp
-iostream
--
-time.h
--
-map.h
-C:/Users/Igor/ProgProjects/TheLaber/lab3/map.h
-robot.h
-C:/Users/Igor/ProgProjects/TheLaber/lab3/robot.h
-
 C:/Users/Igor/ProgProjects/TheLaber/lab3/map.h
 string
 -

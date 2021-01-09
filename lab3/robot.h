@@ -65,10 +65,7 @@ public:
     int apple_counter;
     int X;
     int Y;
-    int sapper_x;
-    int sapper_y;
     bool can_take_apple = false;
-    bool can_smash_apple = false;
     robot_map map;
     int r_map_rad;
     bool sapp_on = false;
@@ -94,19 +91,16 @@ public:
 
     void set_sapper(just_map &god_map);
     void destroy_sapper(just_map &god_map);
-    void move_sapper(move_command order, just_map &god_map);
 
     robot_map give_map_to_sapper();
     void take_fixes(shared_command c);
 
     void add_siblings(int x, int y, int to_from, std::vector<r_search>& from, std::vector<r_search>& to);
     void shortest_way(int x_in_search, int y_in_search,int maximum_x, int maximum_y, cell_value** tmp_map, just_map& god_map);
-    void shortest_coll(int x_in_search, int y_in_search,int maximum_x, int maximum_y, cell_value** tmp_map, just_map& god_map);
-    void shortest_sapp(int x_in_search, int y_in_search,int maximum_x, int maximum_y, cell_value** tmp_map, just_map& god_map);
+    bool shortest_coll(int x_in_search, int y_in_search,int maximum_x, int maximum_y, cell_value** tmp_map, just_map& god_map);
 
-    void make_sapp_move(int tmp_sap_x, int tmp_sap_y,int maximum_x, int maximum_y, std::vector<map_cell>& bomb_positions, cell_value** tmp_map, just_map& god_map);
 
-    void make_collector_move(int tmp_x, int tmp_y,int maximum_x, int maximum_y, std::vector<map_cell>& apple_positions, cell_value** tmp_map, just_map& god_map);
+    bool make_collector_move(int tmp_x, int tmp_y,int maximum_x, int maximum_y, std::vector<map_cell>& apple_positions, cell_value** tmp_map, just_map& god_map, shared_command *c);
     int step_amount(std::string str, int a);
     void ask_command(just_map& god_map);
 
@@ -124,9 +118,9 @@ public:
     sapper();
     void move_sapper(move_command order, just_map &god_map);
 
-    void shortest_sapp(int x_in_search, int y_in_search,int maximum_x, int maximum_y, cell_value** tmp_map, just_map& god_map);
-    void make_sapp_move(int tmp_sap_x, int tmp_sap_y,int maximum_x, int maximum_y, std::vector<map_cell>& bomb_positions, cell_value** tmp_map, just_map& god_map);
-    void make_collector_move(int tmp_x, int tmp_y,int maximum_x, int maximum_y, std::vector<map_cell>& apple_positions, cell_value** tmp_map, just_map& god_map);
+    void add_siblings(int x, int y, int to_from, std::vector<r_search>& from, std::vector<r_search>& to);
+    bool shortest_sapp(int x_in_search, int y_in_search,int maximum_x, int maximum_y, cell_value** tmp_map, just_map& god_map);
+    bool make_sapp_move(int maximum_x, int maximum_y, std::vector<map_cell>& bomb_positions, cell_value** tmp_map, just_map& god_map, shared_command *c);
 
     void get_map_from_collector(robot_map got_one);
     void take_fixes(shared_command c);
