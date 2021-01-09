@@ -13,8 +13,6 @@
   <component name="ChangeListManager">
     <list default="true" id="869d4d4a-1d35-4394-863f-20cecb30fd83" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lab3.dir/main.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lab3.dir/main.cpp.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lab3.dir/map.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lab3.dir/map.cpp.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lab3.dir/objects.a" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lab3.dir/objects.a" afterDir="false" />
@@ -24,6 +22,7 @@
       <change beforePath="$PROJECT_DIR$/map.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/map.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/map.h" beforeDir="false" afterPath="$PROJECT_DIR$/map.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/robot.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/robot.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot.h" beforeDir="false" afterPath="$PROJECT_DIR$/robot.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,19 +66,9 @@
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="lab3" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="lab3" TARGET_NAME="lab3" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="lab3" RUN_TARGET_NAME="lab3">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
   </component>
@@ -119,7 +108,10 @@
       <workItem from="1609845192616" duration="1364000" />
       <workItem from="1609856824726" duration="1754000" />
       <workItem from="1609863614273" duration="7128000" />
-      <workItem from="1609918509061" duration="27343000" />
+      <workItem from="1609918509061" duration="44718000" />
+      <workItem from="1610094447962" duration="527000" />
+      <workItem from="1610195288171" duration="923000" />
+      <workItem from="1610200651418" duration="5141000" />
     </task>
     <servers />
   </component>
