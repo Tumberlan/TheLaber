@@ -8,90 +8,88 @@
 
 
 
-int just_map::get_X() {
+int just_map::get_X()const {
     return X;
 }
 
 
 
-int just_map::get_Y() {
+int just_map::get_Y()const {
     return Y;
 }
 
-void just_map::set_robot_x(int val){
+void just_map::set_robot_x(const int val){
     robot_x = val;
 }
 
-int just_map::get_robot_x() {
+int just_map::get_robot_x()const {
     return robot_x;
 }
 
-void just_map::set_robot_y(int val){
+void just_map::set_robot_y(const int val){
     robot_y = val;
 }
 
-int just_map::get_robot_y() {
+int just_map::get_robot_y()const {
     return robot_y;
 }
 
-void just_map::set_apple_x(int val){
+void just_map::set_apple_x(const int val){
     apple_x = val;
 }
 
-int just_map::get_apple_x() {
+int just_map::get_apple_x()const {
     return apple_x;
 }
 
-void just_map::set_apple_y(int val){
+void just_map::set_apple_y(const int val){
     apple_y = val;
 }
 
-int just_map::get_apple_y() {
+int just_map::get_apple_y()const {
     return apple_y;
 }
 
-void just_map::set_sap_apple_x(int val){
+void just_map::set_sap_apple_x(const int val){
     sap_apple_x = val;
 }
 
-int just_map::get_sap_apple_x() {
+int just_map::get_sap_apple_x() const{
     return sap_apple_x;
 }
 
-void just_map::set_sap_apple_y(int val){
+void just_map::set_sap_apple_y(const int val){
     sap_apple_y = val;
 }
 
-int just_map::get_sap_apple_y() {
+int just_map::get_sap_apple_y()const {
     return sap_apple_y;
 }
 
 
-
-
-int just_map::get_plug_robot_x() {
+int just_map::get_plug_robot_x()const {
     return plug_robot_x;
 }
 
 
 
-int just_map::get_plug_robot_y() {
+int just_map::get_plug_robot_y()const {
     return plug_robot_y;
 }
 
-void just_map::set_sapper_x(int val){
+void just_map::set_sapper_x(const int val){
     sapper_x = val;
 }
 
-int just_map::get_sapper_x() {
+int just_map::get_sapper_x()const {
     return sapper_x;
 }
 
-void just_map::set_sapper_y(int val){
+void just_map::set_sapper_y(const int val){
     sapper_y = val;
 }
 
-int just_map::get_sapper_y() {
+int just_map::get_sapper_y()const {
     return sapper_y;
 }
 
@@ -173,7 +171,7 @@ void just_map::set_map(int x, int y, cell_value val) {
     map[x][y] = val;
 }
 
-cell_value just_map::get_map(int x, int y) {
+cell_value just_map::get_map(const int x,const int y)const {
     return map[x][y];
 }
 
@@ -181,7 +179,7 @@ robot_map::~robot_map(){
     data.clear();
 }
 
-bool robot_map::is_discovered(int x, int y) const {
+bool robot_map::is_discovered(const int x,const int y) const {
     for(auto m : this->data){
         if(m.get_X() == x && m.get_Y() == y){
             return true;
@@ -197,71 +195,71 @@ map_cell::map_cell() {
 }
 
 
-int map_cell::get_X() {
+int map_cell::get_X()const {
     return X;
 }
 
-void map_cell::set_X(int val) {
+void map_cell::set_X(const int val) {
     X = val;
 }
 
-int map_cell::get_Y() {
+int map_cell::get_Y()const {
     return Y;
 }
 
-void map_cell::set_Y(int val) {
+void map_cell::set_Y(const int val) {
     Y = val;
 }
 
-cell_value map_cell::get_value() {
+cell_value map_cell::get_value()const {
     return value;
 }
 
-void map_cell::set_value(cell_value val) {
+void map_cell::set_value(const cell_value val) {
     value = val;
 }
 
-int r_search::get_to_from_point() {
+int r_search::get_to_from_point() const{
     return to_from_point;
 }
 
-void r_search::set_to_from_point(int val) {
+void r_search::set_to_from_point(const int val) {
     to_from_point = val;
 }
 
-int r_search::get_to_go_point() {
+int r_search::get_to_go_point()const {
     return to_go_point;
 }
 
-void r_search::set_to_go_point(int val) {
+void r_search::set_to_go_point(const int val) {
     to_go_point = val;
 }
 
-int r_search::get_from_to_sum() {
+int r_search::get_from_to_sum()const {
     return from_to_sum;
 }
 
-void r_search::set_from_to_sum(int val) {
+void r_search::set_from_to_sum(const int val) {
     from_to_sum = val;
 }
 
-int r_search::get_previous_x() {
+int r_search::get_previous_x()const {
     return previous_x;
 }
 
-void r_search::set_previous_x(int val) {
+void r_search::set_previous_x(const int val) {
     previous_x = val;
 }
 
-int r_search::get_previous_y() {
+int r_search::get_previous_y() const{
     return previous_y;
 }
 
-void r_search::set_previous_y(int val) {
+void r_search::set_previous_y(const int val) {
     previous_y = val;
 }
 
-void robot_map::add_cell(int x, int y, cell_value val) {
+void robot_map::add_cell(const int x,const int y,const cell_value val) {
     map_cell new_cell;
     new_cell.set_X(x);
     new_cell.set_Y(y);
@@ -271,7 +269,7 @@ void robot_map::add_cell(int x, int y, cell_value val) {
 }
 
 
-cell_value robot_map::get_cell(int x, int y) const {
+cell_value robot_map::get_cell(const int x,const int y) const {
     for (auto m : data){
         if(m.get_X() == x && m.get_Y() == y){
             return m.get_value();
@@ -279,7 +277,7 @@ cell_value robot_map::get_cell(int x, int y) const {
     }
 }
 
-bool robot_map::is_added(int a, int b) {
+bool robot_map::is_added(const int a,const int b) {
     for (auto & m : data){
         if(m.get_X() == a && m.get_Y() == b){
             return true;
@@ -288,7 +286,7 @@ bool robot_map::is_added(int a, int b) {
     return false;
 }
 
-bool is_added(int a, int b , std::vector<r_search> r_vector) {
+bool is_added(const int a,const int b , std::vector<r_search> r_vector) {
     for (auto & m : r_vector){
         if(m.get_X() == a && m.get_Y() == b){
             return true;

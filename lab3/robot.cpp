@@ -16,40 +16,40 @@ move_command auto_command::get_value() {
     return value;
 }
 
-void auto_command::set_value(move_command val) {
+void auto_command::set_value(const move_command val) {
     value = val;
 }
 
-int auto_command::get_idx() {
+int auto_command::get_idx()const{
     return idx;
 }
 
-void auto_command::set_idx(int val) {
+void auto_command::set_idx(const int val) {
     idx = val;
 }
 
 
-cell_value shared_command::get_value() {
+cell_value shared_command::get_value()const {
     return value;
 }
 
-void shared_command::set_value(cell_value val) {
+void shared_command::set_value(const cell_value val) {
     value = val;
 }
 
-int shared_command::get_X() {
+int shared_command::get_X() const{
     return X;
 }
 
-void shared_command::set_X(int val) {
+void shared_command::set_X(const int val) {
     X = val;
 }
 
-int shared_command::get_Y() {
+int shared_command::get_Y() const{
     return Y;
 }
 
-void shared_command::set_Y(int val) {
+void shared_command::set_Y(const int val) {
     Y = val;
 }
 
@@ -91,7 +91,7 @@ void robot::scan(just_map& god_map) {
 }
 
 
-void robot::move(move_command order, just_map& god_map) {
+void robot::move(const move_command order, just_map& god_map) {
     cell_value tmp;
     cell_value border_check;
     cell_value ex_tmp = MYSTERY;
@@ -377,7 +377,7 @@ void robot::draw_robot_map(just_map &god_map) {
 
 
 
-int robot::step_amount(std::string str, int a){
+int robot::step_amount(std::string str,const int a)const{
     int mul = 1;
     if(a > 1) {
         for (int i = 0; i < a-1; i++) {
@@ -395,7 +395,7 @@ int robot::step_amount(std::string str, int a){
 }
 
 
-void robot::take_fixes(shared_command c) {
+void robot::take_fixes(const shared_command c) {
     for (int i = 0; i < map.data.size(); i++){
         if(map.data[i].get_value() == ROBOT_SAPPER){
             map.data[i].set_value(c.get_value());
@@ -417,7 +417,7 @@ robot_map robot::give_map_to_sapper() {
 }
 
 // РЕАЛИЗАЦИЯ СКАНЕРА
-void robot::add_siblings(int x, int y, int to_from, std::vector<r_search>& from_r, std::vector<r_search>& to_r) {
+void robot::add_siblings(const int x,const int y,const int to_from, std::vector<r_search>& from_r, std::vector<r_search>& to_r) {
     for(auto & i : from_r){
         if((i.get_X() == x+1 && i.get_Y() == y) || ((i.get_X() == x-1 && i.get_Y() == y)) || ((i.get_X() == x && i.get_Y() == y+1)) || ((i.get_X() == x && i.get_Y() == y-1))){
             if(is_added(X,Y,to_r)){
@@ -443,7 +443,7 @@ void robot::add_siblings(int x, int y, int to_from, std::vector<r_search>& from_
     }
 }
 
-void take_step_back(int iterator, r_search tmp, std::vector<auto_command>& way_out){
+void take_step_back(const int iterator, r_search tmp, std::vector<auto_command>& way_out){
     int x_move = tmp.get_X() - tmp.get_previous_x();
     int y_move = tmp.get_Y() - tmp.get_previous_y();
     auto_command temp_command;
@@ -464,7 +464,7 @@ void take_step_back(int iterator, r_search tmp, std::vector<auto_command>& way_o
 
 
 
-bool is_blocked(int i, int j, int max_x, int max_y, cell_value **tmp_map){
+bool is_blocked(const int i,const int j,const int max_x,const int max_y, cell_value **tmp_map){
     bool left = true;
     bool down = true;
     bool right = true;
@@ -504,7 +504,7 @@ bool is_blocked(int i, int j, int max_x, int max_y, cell_value **tmp_map){
     return false;
 }
 
-void robot::shortest_way(int x_in_search, int y_in_search,int maximum_x, int maximum_y, cell_value** tmp_map , just_map& god_map) {
+void robot::shortest_way(const int x_in_search,const int y_in_search,const int maximum_x,const int maximum_y, cell_value** tmp_map , just_map& god_map) {
 
 
     int tmp_rob_x = X + maximum_x;
@@ -749,7 +749,7 @@ void robot::autobot(int N, just_map &god_map) {
 
 // РЕАЛИЗАЦИЯ СБОРЩИКА ЯБЛОК
 
-bool robot::shortest_coll(int x_in_search, int y_in_search, int maximum_x, int maximum_y, cell_value **tmp_map,just_map &god_map) {
+bool robot::shortest_coll(const int x_in_search,const int y_in_search,const int maximum_x,const int maximum_y, cell_value **tmp_map,just_map &god_map) {
     int tmp_rob_x = X + maximum_x;
     int tmp_rob_y = Y + maximum_y;
 
@@ -1015,7 +1015,7 @@ bool robot::shortest_coll(int x_in_search, int y_in_search, int maximum_x, int m
     return true;
 }
 
-bool robot::make_collector_move(int tmp_rob_x, int tmp_rob_y, int maximum_x, int maximum_y,std::vector<map_cell> &apple_positions, cell_value **tmp_map, just_map &god_map, shared_command *c) {
+bool robot::make_collector_move(const int tmp_rob_x,const int tmp_rob_y,const int maximum_x,const int maximum_y,std::vector<map_cell> &apple_positions, cell_value **tmp_map, just_map &god_map, shared_command *c) {
 
 
     if(can_take_apple){
@@ -1268,7 +1268,7 @@ void robot::destroy_sapper(just_map &god_map){
     sapp_on = false;
 }
 
-void sapper::move_sapper(move_command order, just_map &god_map, move_command *collector_command) {
+void sapper::move_sapper(const move_command order, just_map &god_map, move_command *collector_command) {
     cell_value tmp;
     cell_value border_check;
     if (order == RIGHT){
@@ -1499,7 +1499,7 @@ void sapper::move_sapper(move_command order, just_map &god_map, move_command *co
 
 
 
-void sapper::add_siblings(int x, int y, int to_from, std::vector<r_search>& from_r, std::vector<r_search>& to_r) {
+void sapper::add_siblings(const int x,const int y,const int to_from, std::vector<r_search>& from_r, std::vector<r_search>& to_r) {
     for(auto & i : from_r){
         if((i.get_X() == x+1 && i.get_Y() == y) || ((i.get_X() == x-1 && i.get_Y() == y)) || ((i.get_X() == x && i.get_Y() == y+1)) || ((i.get_X() == x && i.get_Y() == y-1))){
             if(is_added(X,Y,to_r)){
@@ -1526,7 +1526,7 @@ void sapper::add_siblings(int x, int y, int to_from, std::vector<r_search>& from
 }
 
 
-bool sapper::shortest_sapp(int x_in_search, int y_in_search,int maximum_x, int maximum_y, cell_value** tmp_map, just_map& god_map,  move_command *collector_command){
+bool sapper::shortest_sapp(const int x_in_search,const int y_in_search,const int maximum_x,const int maximum_y, cell_value** tmp_map, just_map& god_map,  move_command *collector_command){
 
 
     int tmp_rob_x = X + maximum_x;
@@ -1697,7 +1697,7 @@ bool sapper::shortest_sapp(int x_in_search, int y_in_search,int maximum_x, int m
     return true;
 }
 
-bool sapper::make_sapp_move(int maximum_x, int maximum_y, std::vector<map_cell>& bomb_positions, cell_value** tmp_map, just_map& god_map, shared_command *c, move_command *collector_command){
+bool sapper::make_sapp_move(const int maximum_x,const int maximum_y, std::vector<map_cell>& bomb_positions, cell_value** tmp_map, just_map& god_map, shared_command *c, move_command *collector_command){
 
 
     if(can_smash_apple){
@@ -1767,7 +1767,7 @@ void sapper::get_map_from_collector(robot_map got_one) {
     }
 }
 
-void sapper::take_fixes(shared_command c) {
+void sapper::take_fixes(const shared_command c) {
     for (int i = 0; i < map.data.size(); i++){
         if(map.data[i].get_value() == ROBOT_COLLECTOR){
             map.data[i].set_value(c.get_value());

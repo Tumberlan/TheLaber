@@ -44,29 +44,29 @@ private:
 public:
 
     just_map();
-    int get_X();
-    int get_Y();
-    void set_robot_x(int val);
-    int get_robot_x();
-    void set_robot_y(int val);
-    int get_robot_y();
-    void set_apple_x(int val);
-    int get_apple_x();
-    void set_apple_y(int val);
-    int get_apple_y();
-    void set_sap_apple_x(int val);
-    int get_sap_apple_x();
-    void set_sap_apple_y(int val);
-    int get_sap_apple_y();
-    int get_plug_robot_x();
-    int get_plug_robot_y();
-    void set_sapper_x(int val);
-    int get_sapper_x();
-    void set_sapper_y(int val);
-    int get_sapper_y();
+    int get_X()const;
+    int get_Y()const;
+    void set_robot_x(const int val);
+    int get_robot_x()const;
+    void set_robot_y(const int val);
+    int get_robot_y()const;
+    void set_apple_x(const int val);
+    int get_apple_x()const;
+    void set_apple_y(const int val);
+    int get_apple_y()const;
+    void set_sap_apple_x(const int val);
+    int get_sap_apple_x()const;
+    void set_sap_apple_y(const int val);
+    int get_sap_apple_y()const;
+    int get_plug_robot_x()const;
+    int get_plug_robot_y()const;
+    void set_sapper_x(const int val);
+    int get_sapper_x()const;
+    void set_sapper_y(const int val);
+    int get_sapper_y()const;
 
-    void set_map(int x, int y, cell_value val);
-    cell_value get_map(int x, int y);
+    void set_map(const int x,const int y,const cell_value val);
+    cell_value get_map(const int x,const int y)const;
     void set_robot();
 };
 
@@ -83,12 +83,12 @@ private:
     int Y;
     cell_value value;
 public:
-    int get_X();
-    void set_X(int val);
-    int get_Y();
-    void set_Y(int val);
-    cell_value get_value();
-    void set_value(cell_value val);
+    int get_X()const;
+    void set_X(const int val);
+    int get_Y()const;
+    void set_Y(const int val);
+    cell_value get_value()const;
+    void set_value(const cell_value val);
 
 
     map_cell();
@@ -102,20 +102,20 @@ private:
     int previous_x = 0;
     int previous_y = 0;
 public:
-    int get_to_from_point();
-    void set_to_from_point(int val);
-    int get_to_go_point();
-    void set_to_go_point(int val);
-    int get_from_to_sum();
-    void set_from_to_sum(int val);
-    int get_previous_x();
-    void set_previous_x(int val);
-    int get_previous_y();
-    void set_previous_y(int val);
+    int get_to_from_point()const;
+    void set_to_from_point(const int val);
+    int get_to_go_point()const;
+    void set_to_go_point(const int val);
+    int get_from_to_sum()const;
+    void set_from_to_sum(const int val);
+    int get_previous_x()const;
+    void set_previous_x(const int val);
+    int get_previous_y()const;
+    void set_previous_y(const int val);
 
 };
 
-bool is_added(int , int, std::vector<r_search>);
+bool is_added(const int , const int, std::vector<r_search>);
 
 class robot_map{
 public:
@@ -124,10 +124,10 @@ public:
 
     ~robot_map();
 
-    cell_value get_cell(int , int)const;
-    bool is_discovered(int, int) const;
-    void add_cell(int , int, cell_value);
-    bool is_added(int , int);
+    cell_value get_cell(const int ,const int)const;
+    bool is_discovered(const int,const int) const;
+    void add_cell(const int ,const int,const cell_value);
+    bool is_added(const int ,const int);
 };
 
 
