@@ -19,16 +19,6 @@ enum move_command{
 };
 
 
-enum robot_type{
-    COLLECTOR,
-    SAPPER
-};
-
-enum robot_mode{
-    MANUAL,
-    AUTO_SCAN,
-    AUTO_COLLECT
-};
 
 class shared_command{
 private:
@@ -61,24 +51,19 @@ public:
 
 
 class robot{
-public:
+private:
     int apple_counter;
     int X;
     int Y;
     bool can_take_apple = false;
-    robot_map map;
     int r_map_rad;
     bool sapp_on = false;
+    robot_map map;
+public:
     robot();
 
 
 
-    int get_apple_counter();
-    void set_apple_counter(int val);
-    int get_X();
-    void set_X(int val);
-    int get_Y();
-    void set_Y(int val);
 
 
 
@@ -109,18 +94,19 @@ public:
 
 
 class sapper{
-public:
+private:
     int X;
     int Y;
     robot_map map;
     bool can_smash_apple = false;
+public:
 
     sapper();
-    void move_sapper(move_command order, just_map &god_map);
+    void move_sapper(move_command order, just_map &god_map, move_command *collector_command);
 
     void add_siblings(int x, int y, int to_from, std::vector<r_search>& from, std::vector<r_search>& to);
-    bool shortest_sapp(int x_in_search, int y_in_search,int maximum_x, int maximum_y, cell_value** tmp_map, just_map& god_map);
-    bool make_sapp_move(int maximum_x, int maximum_y, std::vector<map_cell>& bomb_positions, cell_value** tmp_map, just_map& god_map, shared_command *c);
+    bool shortest_sapp(int x_in_search, int y_in_search,int maximum_x, int maximum_y, cell_value** tmp_map, just_map& god_map,  move_command *collector_command);
+    bool make_sapp_move(int maximum_x, int maximum_y, std::vector<map_cell>& bomb_positions, cell_value** tmp_map, just_map& god_map, shared_command *c,  move_command *collector_command);
 
     void get_map_from_collector(robot_map got_one);
     void take_fixes(shared_command c);

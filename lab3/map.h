@@ -20,7 +20,6 @@ enum cell_value{
     BOMB,
     APPLE,
     BORDER,
-    BLOCKED
 };
 
 cell_value random_state();
@@ -45,9 +44,7 @@ private:
 public:
 
     just_map();
-    void set_X(int val);
     int get_X();
-    void set_Y(int val);
     int get_Y();
     void set_robot_x(int val);
     int get_robot_x();
@@ -61,9 +58,7 @@ public:
     int get_sap_apple_x();
     void set_sap_apple_y(int val);
     int get_sap_apple_y();
-    void set_plug_robot_x(int val);
     int get_plug_robot_x();
-    void set_plug_robot_y(int val);
     int get_plug_robot_y();
     void set_sapper_x(int val);
     int get_sapper_x();
@@ -104,8 +99,8 @@ private:
     int to_from_point = 0;
     int to_go_point = 0;
     int from_to_sum = 0;
-    int previous_x = NULL;
-    int previous_y = NULL;
+    int previous_x = 0;
+    int previous_y = 0;
 public:
     int get_to_from_point();
     void set_to_from_point(int val);
@@ -133,7 +128,6 @@ public:
     bool is_discovered(int, int) const;
     void add_cell(int , int, cell_value);
     bool is_added(int , int);
-    // std::ostream& operator<<(std::ostream& os, const game_map& map)
 };
 
 

@@ -13,11 +13,10 @@
   <component name="ChangeListManager">
     <list default="true" id="869d4d4a-1d35-4394-863f-20cecb30fd83" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lab3.dir/main.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lab3.dir/main.cpp.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lab3.dir/objects.a" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lab3.dir/objects.a" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lab3.dir/robot.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lab3.dir/robot.cpp.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/lab3.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/lab3.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/map.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/map.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/map.h" beforeDir="false" afterPath="$PROJECT_DIR$/map.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/robot.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/robot.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/robot.h" beforeDir="false" afterPath="$PROJECT_DIR$/robot.h" afterDir="false" />
     </list>
@@ -108,7 +107,8 @@
       <workItem from="1609918509061" duration="44718000" />
       <workItem from="1610094447962" duration="527000" />
       <workItem from="1610195288171" duration="923000" />
-      <workItem from="1610200651418" duration="17903000" />
+      <workItem from="1610200651418" duration="17995000" />
+      <workItem from="1610260784217" duration="14163000" />
     </task>
     <servers />
   </component>

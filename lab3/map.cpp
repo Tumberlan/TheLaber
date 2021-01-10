@@ -6,17 +6,13 @@
 #include <random>
 #include <cmath>
 
-void just_map::set_X(int val){
-    X = val;
-}
+
 
 int just_map::get_X() {
     return X;
 }
 
-void just_map::set_Y(int val){
-    Y = val;
-}
+
 
 int just_map::get_Y() {
     return Y;
@@ -63,7 +59,7 @@ int just_map::get_sap_apple_x() {
 }
 
 void just_map::set_sap_apple_y(int val){
-    apple_y = val;
+    sap_apple_y = val;
 }
 
 int just_map::get_sap_apple_y() {
@@ -71,17 +67,13 @@ int just_map::get_sap_apple_y() {
 }
 
 
-void just_map::set_plug_robot_x(int val){
-    plug_robot_x = val;
-}
+
 
 int just_map::get_plug_robot_x() {
     return plug_robot_x;
 }
 
-void just_map::set_plug_robot_y(int val){
-    plug_robot_y = val;
-}
+
 
 int just_map::get_plug_robot_y() {
     return plug_robot_y;
@@ -199,8 +191,8 @@ bool robot_map::is_discovered(int x, int y) const {
 }
 
 map_cell::map_cell() {
-    X = NULL;
-    Y = NULL;
+    X = 0;
+    Y = 0;
     value = MYSTERY;
 }
 
