@@ -9,12 +9,8 @@
 C:/Users/Igor/ProgProjects/TheLaber/lab4/main.cpp
 iostream
 -
-fstream
--
 tuple
 -
-tuple_functions.h
-C:/Users/Igor/ProgProjects/TheLaber/lab4/tuple_functions.h
 parser.h
 C:/Users/Igor/ProgProjects/TheLaber/lab4/parser.h
 
@@ -25,17 +21,7 @@ fstream
 -
 tuple
 -
-tuple_functions.h
-C:/Users/Igor/ProgProjects/TheLaber/lab4/tuple_functions.h
-cmath
--
-
-C:/Users/Igor/ProgProjects/TheLaber/lab4/tuple_functions.h
 iostream
--
-tuple
--
-vector
 -
 sstream
 -

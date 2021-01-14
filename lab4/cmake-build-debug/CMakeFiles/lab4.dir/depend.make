@@ -3,5 +3,4 @@
 
 CMakeFiles/lab4.dir/main.cpp.obj: ../main.cpp
 CMakeFiles/lab4.dir/main.cpp.obj: ../parser.h
-CMakeFiles/lab4.dir/main.cpp.obj: ../tuple_functions.h
 

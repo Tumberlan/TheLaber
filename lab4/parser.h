@@ -7,7 +7,96 @@
 #include <vector>
 #include <fstream>
 #include <tuple>
-#include "tuple_functions.h"
+#include <iostream>
+#include <sstream>
+
+
+
+template<typename Type>
+
+Type from_string(const std::string &str){
+    std::stringstream ss(str);
+    Type val;
+    if(!(ss >> val)){  //из ss вытягиваем в val (преобразование строки в нужный нам тип)
+        throw std::exception(); // инициализируем исключение
+    }
+    return val;
+}
+
+// особый случай когда нужный тип сама строка
+template<>
+
+std::string from_string<std::string>(const std::string &str){
+    return str;
+}
+
+
+
+template<size_t N, typename Type>
+
+class tuple_print{
+public:
+    static void print(std::ostream &os, const Type &tuple){
+        tuple_print<N-1, Type>::print(os, tuple);
+        if(N != 1){
+            os << ", ";
+        }
+        os << " " << std::get<N-1>(tuple); // std::get<N-1>(tuple) берет из tuple N-1 элемент
+    }
+};
+
+
+// особый случай для 0 итерации
+template<typename Type>
+
+class tuple_print<0, Type>{
+public:
+    static void print(std::ostream &os, const Type &tuple){}
+};
+
+
+template <typename... Arguments> //набор параметров
+std::ostream& operator<<(std::ostream& os, const std::tuple<Arguments...>& tuple) { //распаковка параметров
+    os << "(";
+    tuple_print<sizeof...(Arguments), std::tuple<Arguments...>>::print(os, tuple);
+    os << ")";
+    return os;
+}
+
+//для std::vector<std::string>
+template<size_t N, typename Type>
+
+class tuple_add_strings{
+public:
+    static void convertor(Type &tuple, const std::vector<std::string> &strings){
+
+        try{
+            std::get<N-1>(tuple) = from_string<typename std::tuple_element<N-1, Type>::type>(strings[N-1]);// пытаемся к строке приравнять строку
+        }
+        catch (std::exception&){
+            throw std::invalid_argument(std::to_string(N)); // в какой ячейке в строке неподдерживаемый символ
+        }
+        tuple_add_strings<N-1, Type>::convertor(tuple, strings);
+    }
+};
+
+// особый случай для 0 итерации
+template<typename Type>
+
+class tuple_add_strings<0, Type>{
+public:
+    static void convertor(Type &tuple, const std::vector<std::string> &strings){}
+};
+
+
+template<typename... Arguments>
+
+std::tuple<Arguments...> tuple_parse(const std::vector<std::string> &strings){
+    std::tuple<Arguments...> tuple;
+    tuple_add_strings<sizeof...(Arguments), std::tuple<Arguments...>>::convertor(tuple, strings); // sizeof...(Arguments) возвращает количество аргументов
+    return tuple;
+}
+
 
 
 template<typename... Arguments>
@@ -22,7 +111,7 @@ private:
     int line_counter;
     
 
-    std::string get_row(std::istream &in_stream, size_t amount_of_lines_above){
+    std::string get_row(std::istream &in_stream){
         std::string str;
         bool is_end_symbol = false;
         char symbol;
@@ -43,7 +132,7 @@ private:
         file.seekg(0, std::ios::beg); // перемещение в начало файла
 
         line_counter = 0;
-        while (get_row(file, line_counter) != ""){
+        while (get_row(file) != ""){
             line_counter++;
         }
 
@@ -77,10 +166,6 @@ private:
 
     std::tuple<Arguments...> row_parse(size_t string_number,std::string &str){
         size_t number_of_arguments = sizeof... (Arguments);
-
-        if(str.empty()){
-            throw std::invalid_argument("Line " + std::to_string(string_number) + " is empty");
-        }
 
         std::vector<std::string> parts = row_split(str);
 
@@ -119,9 +204,9 @@ private:
                 file.clear();
                 file.seekg(0, std::ios::beg);
                 for(int i = 0; i < idx; i++){
-                    parent->get_row(file, i);
+                    parent->get_row(file);
                 }
-                value = parent->get_row(file, idx);
+                value = parent->get_row(file);
             }
         }
 
