@@ -83,6 +83,12 @@
 		<Unit filename="C:/Users/Igor/ProgProjects/TheLaber/lab4/main.cpp">
 			<Option target="lab4"/>
 		</Unit>
+		<Unit filename="C:/Users/Igor/ProgProjects/TheLaber/lab4/parser.h">
+			<Option target="lab4"/>
+		</Unit>
+		<Unit filename="C:/Users/Igor/ProgProjects/TheLaber/lab4/tuple_functions.h">
+			<Option target="lab4"/>
+		</Unit>
 		<Unit filename="C:/Users/Igor/ProgProjects/TheLaber/lab4/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
