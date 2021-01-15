@@ -260,9 +260,9 @@ private:
     };
 
 public:
-    CSV_parser(std::ifstream& f, size_t l_to_skip): file(f){
+    CSV_parser(std::ifstream& f, size_t l_to_skip, char separator): file(f){
         lines_to_skip = l_to_skip;
-        sep_column_symbol = ',';
+        sep_column_symbol = separator;
         sep_row_symbol = '\n';
         end_symbol = '\"';
 

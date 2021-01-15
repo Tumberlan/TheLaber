@@ -77,7 +77,7 @@ public:
     void set_sapper(just_map &god_map);
     void destroy_sapper(just_map &god_map);
 
-    robot_map give_map_to_sapper();
+    robot_map* give_map_to_sapper();
     void take_fixes(const shared_command c);
 
     void add_siblings(const int x,const int y,const int to_from, std::vector<r_search>& from, std::vector<r_search>& to);
@@ -108,7 +108,7 @@ public:
     bool shortest_sapp(const int x_in_search,const int y_in_search,const int maximum_x,const int maximum_y, cell_value** tmp_map, just_map& god_map,  move_command *collector_command);
     bool make_sapp_move(const int maximum_x,const int maximum_y, std::vector<map_cell>& bomb_positions, cell_value** tmp_map, just_map& god_map, shared_command *c,  move_command *collector_command);
 
-    void get_map_from_collector(robot_map got_one);
+    void get_map_from_collector(robot_map *got_one);
     void take_fixes(const shared_command c);
 };
 

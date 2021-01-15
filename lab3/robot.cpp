@@ -408,10 +408,10 @@ void robot::take_fixes(const shared_command c) {
     }
 }
 
-robot_map robot::give_map_to_sapper() {
-    robot_map new_one;
+robot_map* robot::give_map_to_sapper() {
+    robot_map* new_one;
     for(int i = 0; i < map.data.size(); i++){
-        new_one.add_cell(map.data[i].get_X(), map.data[i].get_Y(), map.data[i].get_value());
+        new_one->add_cell(map.data[i].get_X(), map.data[i].get_Y(), map.data[i].get_value());
     }
     return new_one;
 }
@@ -1757,8 +1757,8 @@ sapper::sapper() {
     Y = 0;
 }
 
-void sapper::get_map_from_collector(robot_map got_one) {
-    map = got_one;
+void sapper::get_map_from_collector(robot_map *got_one) {
+    map = *got_one;
     for (int i = 0; i < map.data.size(); i++){
         if (map.data[i].get_value() == ROBOT_SAPPER){
             X = map.data[i].get_X();

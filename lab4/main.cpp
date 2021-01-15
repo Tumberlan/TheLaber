@@ -6,8 +6,10 @@
 int main() {
     std::ifstream file("test.csv");
 
+    char separator;
+    std::cin >> separator;
     try{
-        CSV_parser<std::string, int, std::string> parser(file, 1);
+        CSV_parser<std::string, int, std::string> parser(file, 1, separator);
         for(const auto &tuple : parser){
 
             std::cout << tuple << std::endl;
